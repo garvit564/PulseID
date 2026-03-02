@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Government Dashboard</title>
+    <style>
+        body { font-family: Arial; background:#f5f7fa; text-align:center; }
+        table { width:80%; margin:40px auto; border-collapse:collapse; }
+        th, td { padding:10px; border:1px solid #ddd; }
+        th { background:#0d6efd; color:white; }
+        a { color:green; text-decoration:none; }
+    </style>
+</head>
+<body>
+<h2>Government Control Panel</h2>
+
+<table>
+<tr>
+    <th>Hospital</th>
+    <th>License</th>
+    <th>Status</th>
+    <th>Action</th>
+</tr>
+
+{% for hospital in pending_hospitals %}
+<tr>
+    <td>{{ hospital.hospital_name }}</td>
+    <td>{{ hospital.license_number }}</td>
+    <td>{{ hospital.status }}</td>
+    <td>
+        {% if hospital.status == "pending" %}
+            <a href="{% url 'approve_hospital' hospital.id %}" style="color:green;">Approve</a> |
+            <a href="{% url 'reject_hospital' hospital.id %}" style="color:red;">Reject</a>
+        {% else %}
+            -
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+
+
+</table>
+
+
+<h3 class="section-title">Pending Doctor Requests</h3>
+
+{% if pending_doctors %}
+<table>
+<tr>
+    <th>Name</th>
+    <th>Hospital</th>
+    <th>License</th>
+    <th>Action</th>
+</tr>
+
+{% for doctor in pending_doctors %}
+<tr>
+    <td>{{ doctor.user.name }}</td>
+    <td>{{ doctor.hospital.hospital_name }}</td>
+    <td>{{ doctor.license_number }}</td>
+    <td>
+        <a href="{% url 'approve_doctor' doctor.id %}" class="approve">Approve</a> |
+        <a href="{% url 'reject_doctor' doctor.id %}" class="reject">Reject</a>
+    </td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<p class="empty">No Pending Doctor Requests</p>
+{% endif %}
+
+<a href="/logout/">Logout</a>
+
+</body>
+</html>

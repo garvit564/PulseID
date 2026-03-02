@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Citizen Register - PulseID</title>
+    <style>
+        body { font-family: Arial; background:#eef2f7; display:flex; justify-content:center; align-items:center; height:100vh; }
+        .card { background:white; padding:30px; width:350px; box-shadow:0 0 15px rgba(0,0,0,0.1); border-radius:8px; }
+        h2 { text-align:center; }
+        input { width:100%; padding:8px; margin:8px 0; }
+        button { width:100%; padding:10px; background:#0d6efd; color:white; border:none; cursor:pointer; }
+        button:hover { background:#084298; }
+        .error { color:red; text-align:center; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h2>Citizen Register</h2>
+
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Full Name" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Register</button>
+    </form>
+
+    <p style="text-align:center;margin-top:10px;">
+        <a href="/citizen/login/">Already have account?</a>
+    </p>
+</div>
+</body>
+</html>

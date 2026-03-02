@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PulseID - Medical Profile</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 900px;
+            margin: 40px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        h2, h3 {
+            margin-bottom: 15px;
+        }
+
+        .record {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+
+        .record:last-child {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #198754;
+            color: white;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        .no-data {
+            color: gray;
+        }
+
+        .back {
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 12px;
+            background: #0d6efd;
+            color: white;
+            border-radius: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- 🔹 Patient Basic Info -->
+    <div class="card">
+        <h2>{{ user.name }}</h2>
+
+        <p><strong>Health ID:</strong> {{ user.unique_health_id }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        {% if user.qr_code %}
+            <p><strong>QR Code:</strong></p>
+            <img src="{{ user.qr_code.url }}" width="150">
+        {% endif %}
+
+        <span class="badge">Verified PulseID Record</span>
+    </div>
+
+    <!-- 🔹 Treatment History -->
+    <div class="card">
+        <h3>Medical Treatment History</h3>
+
+        {% if records %}
+            {% for record in records %}
+                <div class="record">
+                    <p><strong>Disease:</strong> {{ record.disease }}</p>
+                    <p><strong>Medication:</strong> {{ record.medication }}</p>
+                    <p><strong>Doctor:</strong> Dr. {{ record.doctor.user.name }}</p>
+                    <p><strong>Hospital:</strong> {{ record.hospital.hospital_name }}</p>
+                    <p><small>{{ record.created_at }}</small></p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-data">No Medical Records Found</p>
+        {% endif %}
+    </div>
+
+    <a href="/" class="back">Back to Home</a>
+
+</div>
+
+</body>
+</html>

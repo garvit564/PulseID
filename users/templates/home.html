@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PulseID</title>
+    <style>
+      body {
+        font-family: Arial;
+        background: #f4f6f9;
+        margin: 0;
+      }
+      .navbar {
+        background: #0d6efd;
+        color: white;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .navbar a {
+        color: white;
+        margin-left: 15px;
+        text-decoration: none;
+      }
+      .container {
+        width: 80%;
+        margin: 30px auto;
+        text-align: center;
+      }
+      .hospital-card {
+        background: white;
+        padding: 15px;
+        margin: 10px;
+        border-radius: 8px;
+        display: inline-block;
+        width: 250px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      button {
+        padding: 8px 12px;
+        background: #0d6efd;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 🔵 NAVBAR -->
+    <!-- 🔵 NAVBAR -->
+    <div class="navbar">
+      <div>
+        <strong>PulseID</strong>
+      </div>
+
+      <div>
+        {% if request.user.is_authenticated %}
+          <span>Welcome {{ request.user.name }}</span>
+
+          {% if request.user.role == 'citizen' %}
+            <a href="/citizen/profile/">My Profile</a>
+          {% elif request.user.role == 'hospital' %}
+            <a href="/hospital/dashboard/">Hospital Dashboard</a>
+          {% elif request.user.role == 'doctor' %}
+            <a href="/doctor/dashboard/">Doctor Dashboard</a>
+          {% elif request.user.role == 'govt' %}
+            <a href="/govt/dashboard/">Govt Dashboard</a>
+          {% endif %}
+
+          <a href="/logout/">Logout</a>
+        {% else %}
+          <!-- Citizen -->
+          <a href="/citizen/register/">Citizen Register</a>
+          <a href="/citizen/login/">Citizen Login</a>
+
+          <!-- Hospital -->
+          <a href="/hospital/register/">Hospital Register</a>
+          <a href="/hospital/login/">Hospital Login</a>
+
+          <!-- Doctor -->
+          <a href="/doctor/register/">Doctor Register</a>
+          <a href="/doctor/login/">Doctor Login</a>
+
+          <!-- Government -->
+          <a href="/govt/login/">Govt Login</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- 🔵 MAIN CONTENT -->
+    <div class="container">
+      <h2>Explore Approved Hospitals</h2>
+
+      {% for hospital in hospitals %}
+        <div class="hospital-card">
+          <h3>{{ hospital.hospital_name }}</h3>
+          <p>{{ hospital.address }}</p>
+          <a href="/citizen/hospital/{{ hospital.id }}/"><button>View Doctors</button></a>
+        </div>
+      {% empty %}
+        <p>No Approved Hospitals Yet</p>
+      {% endfor %}
+
+      <hr />
+
+      <!-- 🔵 Citizen Only Feature -->
+      {% if request.user.is_authenticated and request.user.role == 'citizen' %}
+        <a href="/citizen/profile/"><button>View Your Health Profile</button></a>
+      {% endif %}
+
+      <hr />
+      <h3>Access Medical Info by Health ID</h3>
+
+      <form method="POST" action="{% url 'access_by_health_id' %}">
+        {% csrf_token %}
+        <input type="text" name="health_id" placeholder="Enter Unique Health ID" required />
+        <button type="submit">Access Info</button>
+      </form>
+      <hr />
+
+      <div style="margin-top:30px; text-align:center;">
+        <h2 style="color:red;">🚨 Emergency Ambulance Service</h2>
+
+        <p>Immediate medical assistance? Request ambulance instantly.</p>
+
+        <a href="{% url 'emergency_form' %}"><button style="
+            background:red;
+            color:white;
+            padding:12px 25px;
+            font-size:16px;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+        ">🚑 Request Emergency</button></a>
+      </div>
+    </div>
+  </body>
+</html>

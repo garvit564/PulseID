@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ doctor.user.name }}</title>
+    <style>
+        body { font-family: Arial; background:#f4f6f9; text-align:center; }
+        .card {
+            background:white;
+            width:500px;
+            margin:50px auto;
+            padding:30px;
+            border-radius:10px;
+            box-shadow:0 0 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Dr. {{ doctor.user.name }}</h2>
+
+    <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+    <p><strong>Hospital:</strong> {{ doctor.hospital.hospital_name }}</p>
+    <p><strong>License:</strong> {{ doctor.license_number }}</p>
+
+    <p style="color:green; font-weight:bold;">Govt Verified ✔</p>
+
+    <br>
+    <a href="/">Back to Home</a>
+</div>
+
+</body>
+</html>

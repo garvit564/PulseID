@@ -1,0 +1,17 @@
+<h2>🚑 Emergency Submitted</h2>
+
+<p><strong>Priority:</strong> {{ priority|upper }}</p>
+
+{% if hospital %}
+<p>Assigned Hospital:</p>
+<h3>{{ hospital.hospital_name }}</h3>
+<p>Ambulance reaching shortly...</p>
+{% else %}
+<p>No nearby hospital found. Request is pending.</p>
+{% endif %}
+
+<hr>
+<h3>AI Analysis:</h3>
+<p>{{ analysis }}</p>
+
+<a href="/">Back to Home</a>

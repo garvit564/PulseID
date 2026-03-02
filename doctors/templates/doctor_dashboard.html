@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Doctor Dashboard</title>
+    <style>
+      body {
+        font-family: Arial;
+        background: #f4f6f9;
+        text-align: center;
+      }
+      
+      .card {
+        background: white;
+        width: 500px;
+        margin: 50px auto;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      }
+      
+      .approved {
+        color: green;
+        font-weight: bold;
+      }
+      
+      .pending {
+        color: orange;
+        font-weight: bold;
+      }
+      
+      .rejected {
+        color: red;
+        font-weight: bold;
+      }
+      
+      a {
+        text-decoration: none;
+      }
+      
+      .btn {
+        padding: 8px 15px;
+        background: #dc3545;
+        color: white;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Doctor Dashboard</h2>
+
+      <p>
+        <strong>Name:</strong> {{ profile.user.name }}
+      </p>
+      <p>
+        <strong>Email:</strong> {{ profile.user.email }}
+      </p>
+      <p>
+        <strong>Hospital:</strong> {{ profile.hospital.hospital_name }}
+      </p>
+      <p>
+        <strong>Specialization:</strong> {{ profile.specialization }}
+      </p>
+
+      {% if profile.status == 'approved' %}
+        <p class="approved">Approved by Government</p>
+      {% elif profile.status == 'rejected' %}
+        <p class="rejected">Rejected by Government</p>
+      {% else %}
+        <p class="pending">Pending Government Approval</p>
+      {% endif %}
+
+      <br />
+      <a href="/logout/" class="btn">Logout</a>
+
+      <a href="/doctor/access-patient/"><button>Access Patient Data</button></a>
+    </div>
+  </body>
+</html>

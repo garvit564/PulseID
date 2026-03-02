@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ hospital.hospital_name }} - PulseID</title>
+    <style>
+      body {
+        font-family: Arial;
+        background: #f4f6f9;
+        margin: 0;
+      }
+      
+      .navbar {
+        background: #0d6efd;
+        color: white;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+      }
+      
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        margin-left: 15px;
+      }
+      
+      .container {
+        width: 80%;
+        margin: 30px auto;
+      }
+      
+      .hospital-box {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+      
+      .doctor-card {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        margin: 10px;
+        width: 250px;
+        display: inline-block;
+        vertical-align: top;
+      }
+      
+      .doctor-card button {
+        padding: 6px 10px;
+        background: #0d6efd;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      
+      .doctor-card button:hover {
+        background: #084298;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 🔵 Navbar -->
+    <div class="navbar">
+      <div>
+        <strong>PulseID</strong>
+      </div>
+      <div>
+        <a href="/">Home</a>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- 🏥 Hospital Info -->
+      <div class="hospital-box">
+        <h2>{{ hospital.hospital_name }}</h2>
+        <p>
+          <strong>Address:</strong> {{ hospital.address }}
+        </p>
+        <p>
+          <strong>License:</strong> {{ hospital.license_number }}
+        </p>
+      </div>
+
+      <!-- 👨‍⚕ Doctors Section -->
+      <h3>Approved Doctors</h3>
+
+      {% if doctors %}
+        {% for doctor in doctors %}
+          <div class="doctor-card">
+            <h4>{{ doctor.user.name }}</h4>
+            <p>
+              <strong>Specialization:</strong> {{ doctor.specialization }}
+            </p>
+            <p>
+              <strong>License:</strong> {{ doctor.license_number }}
+            </p>
+
+            <a href="{% url 'doctor_public_profile' doctor.id %}"><button>View Profile</button></a>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p>No Approved Doctors Available</p>
+      {% endif %}
+    </div>
+  </body>
+</html>
