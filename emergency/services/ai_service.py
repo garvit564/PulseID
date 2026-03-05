@@ -2,6 +2,10 @@ import requests
 from django.conf import settings
 
 
+import requests
+from django.conf import settings
+
+
 def analyze_emergency(history, reason):
 
     url = "https://openrouter.ai/api/v1/chat/completions"
@@ -19,22 +23,22 @@ You are an emergency medical triage AI.
 Patient Medical History:
 {history}
 
-Current Emergency Reason:
+Emergency Reason:
 {reason}
 
-Based on medical history and current symptoms:
-
-1. Classify severity strictly as one of: low, medium, high, critical.
-2. Summarize relevant past conditions.
-3. Mention possible medical risks.
-4. Suggest what hospital team should prepare for.
-
-Respond strictly in this format:
+Analyse the case and respond EXACTLY like this:
 
 PRIORITY: <low/medium/high/critical>
+SPECIALITY: <cardiology/trauma/orthopedic/neurology/pediatric/general>
+SUMMARY: <2-3 sentence medical explanation for doctors>
+summary should be shown in bullets points
+do not extraggate
 
-SUMMARY:
-<short professional medical summary>
+The summary must explain:
+- patient's past treatment history
+- probable condition
+- possible risks
+- what hospital team should prepare for
 """
 
     data = {
@@ -53,17 +57,20 @@ SUMMARY:
         print("AI RAW RESPONSE:", result)
 
         if "error" in result:
-            return "medium", result["error"]["message"]
+            return "medium", "general", result["error"]["message"]
 
         if "choices" not in result:
-            return "medium", "Unexpected AI response format"
+            return "medium", "general", "Unexpected AI response format"
 
         content = result["choices"][0]["message"]["content"]
 
-        priority = "medium"
-
         text = content.lower()
 
+        priority = "medium"
+        speciality = "general"
+        summary = content
+
+        # priority detection
         if "critical" in text:
             priority = "critical"
         elif "high" in text:
@@ -73,7 +80,23 @@ SUMMARY:
         elif "low" in text:
             priority = "low"
 
-        return priority, content
+        # speciality detection
+        if "cardiology" in text:
+            speciality = "cardiology"
+        elif "trauma" in text:
+            speciality = "trauma"
+        elif "orthopedic" in text:
+            speciality = "orthopedic"
+        elif "neurology" in text:
+            speciality = "neurology"
+        elif "pediatric" in text:
+            speciality = "pediatric"
+
+        # extract summary
+        if "summary:" in text:
+            summary = content.split("SUMMARY:")[-1].strip()
+
+        return priority, speciality, summary
 
     except Exception as e:
-        return "medium", str(e)
+        return "medium", "general", str(e)

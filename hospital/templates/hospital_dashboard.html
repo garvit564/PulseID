@@ -87,7 +87,9 @@
           <tr>
             <th>Patient</th>
             <th>Reason</th>
+            <th>AI Analysis</th>
             <th>Priority</th>
+            <th>Required Speciality</th>
             <th>Location</th>
             <th>Status</th>
             <th>Action</th>
@@ -109,10 +111,16 @@
                   {{ e.priority|upper }}
                 {% endif %}
               </td>
+              <td>
+                <p>
+                  <strong></strong> {{ e.required_speciality }}
+                </p>
+              </td>
               <td>{{ e.location }}</td>
               <td>{{ e.status }}</td>
               <td>
                 <td>
+                  <a href="{% url 'ambulance_runout' e.id %}"><button style="background:red;color:white;">🚑 Ambulance Runout</button></a>
                   {% if e.status == 'pending' %}
                     <a href="{% url 'start_emergency' e.id %}"><button style="background:orange;color:white;">Take Action</button></a>
                   {% elif e.status == 'in_progress' %}

@@ -1,37 +1,39 @@
 <h2>🚑 Emergency Request Status</h2>
 
-<p><strong>Priority:</strong> {{ emergency.priority|upper }}</p>
+<p>
+  <strong>Priority:</strong> {{ emergency.priority|upper }}
+</p>
 
 {% if emergency.hospital %}
-    <p><strong>Assigned Hospital:</strong> {{ emergency.hospital.hospital_name }}</p>
+  <p>
+    <strong>Assigned Hospital:</strong> {{ emergency.hospital.hospital_name }}
+  </p>
 {% else %}
-    <p>No hospital assigned yet.</p>
+  <p>No hospital assigned yet.</p>
 {% endif %}
 
-<hr>
+<hr />
 
 <h3>Status:</h3>
 
-{% if emergency.status == "pending" %}
-    <p style="color:orange;">
-        ⏳ Waiting for hospital to take action...
-    </p>
-
-{% elif emergency.status == "in_progress" %}
-    <p style="color:red;">
-        🚑 Hospital is taking action. Ambulance reaching you shortly.
-    </p>
-
-{% elif emergency.status == "completed" %}
-    <p style="color:green;">
-        ✅ Emergency handled successfully.
-    </p>
+{% if emergency.status == 'pending' %}
+  <p style="color:orange;">⏳ Waiting for hospital to take action...</p>
+{% elif emergency.status == 'in_progress' %}
+  <p style="color:red;">🚑 Hospital is taking action. Ambulance reaching you shortly.</p>
+{% elif emergency.status == 'completed' %}
+  <p style="color:green;">✅ Emergency handled successfully.</p>
+  
+{% endif %}
+{% if emergency.status == "rerouted" %}
+<p style="color:orange;font-weight:bold;">
+⚠ Emergency has been re-routed to another hospital.
+</p>
 {% endif %}
 
-<hr>
+<hr />
 
 <h3>AI Analysis:</h3>
 <p>{{ emergency.ai_analysis }}</p>
 
-<br>
+<br />
 <a href="/">Back to Home</a>

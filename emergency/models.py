@@ -17,6 +17,7 @@ class EmergencyRequest(models.Model):
 
     STATUS_CHOICES = (
         ("pending", "Pending"),
+        ("rerouted", "Re Routed"),
         ("in_progress", "In Progress"),
         ("completed", "Completed"),
     )
@@ -28,6 +29,15 @@ class EmergencyRequest(models.Model):
         null=True,
         blank=True,
         on_delete=models.SET_NULL
+    )
+    rerouted = models.BooleanField(default=False)
+
+    previous_hospital = models.ForeignKey(
+        "hospital.HospitalProfile",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="previous_emergencies"
     )
 
     reason = models.TextField()
@@ -48,6 +58,8 @@ class EmergencyRequest(models.Model):
         choices=STATUS_CHOICES,
         default="pending"
     )
+
+    required_speciality = models.CharField(max_length=100, null=True, blank=True)
 
     ai_analysis = models.TextField(null=True, blank=True)
 

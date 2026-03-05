@@ -17,6 +17,7 @@ def hospital_register(request):
         longitude = request.POST.get("longitude")
         city = request.POST.get("city")
         license_number = request.POST.get("license_number")
+        specialities = request.POST.getlist("specialities")
 
         if User.objects.filter(email=email).exists():
             return render(request, "hospital_register.html", {"error": "Email already exists"})
@@ -34,7 +35,9 @@ def hospital_register(request):
             latitude=latitude,
             longitude=longitude,
             city=city,
-            license_number=license_number
+            license_number=license_number,
+            specialities=specialities
+
         )
 
         login(request, user)
@@ -97,6 +100,10 @@ def hospital_dashboard(request):
     emergency_requests = EmergencyRequest.objects.filter(
         hospital=profile
     ).order_by("-created_at")
+
+    emergency_requests = EmergencyRequest.objects.filter(
+        hospital=profile
+    ).exclude(status="completed")
 
     context = {
         "profile": profile,

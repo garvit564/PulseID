@@ -1,15 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from users.models import User
 from hospital.models import HospitalProfile
 from .models import EmergencyRequest
 from .services.ai_service import analyze_emergency
 from records.models import TreatmentRecord
-
-import math
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect
-from .models import EmergencyRequest
-
+import math
 
 
 def emergency_form(request):
@@ -57,16 +53,26 @@ Date: {r.created_at}
         else:
             history_text = "No prior medical records available."
 
-        # 🤖 AI Analysis with history context
-        priority, explanation = analyze_emergency(history_text, reason)
+        # 🤖 AI Analysis
+        priority, speciality, explanation = analyze_emergency(history_text, reason)
 
-        # 🔍 Find nearest approved hospital
         hospitals = HospitalProfile.objects.filter(status="approved")
+
+        # 🔍 First find hospitals with matching speciality
+        matching_hospitals = []
+
+        for h in hospitals:
+            if h.specialities and speciality in h.specialities:
+                matching_hospitals.append(h)
+
+        # If no speciality hospital found → fallback to all hospitals
+        search_pool = matching_hospitals if matching_hospitals else hospitals
 
         nearest = None
         min_distance = float("inf")
 
-        for h in hospitals:
+        for h in search_pool:
+
             if h.latitude and h.longitude:
 
                 distance = math.sqrt(
@@ -86,6 +92,7 @@ Date: {r.created_at}
             latitude=latitude,
             longitude=longitude,
             priority=priority,
+            required_speciality=speciality,
             ai_analysis=explanation,
             status="pending",
         )
@@ -96,6 +103,64 @@ Date: {r.created_at}
 
 
 
+
+@login_required
+def ambulance_runout(request, emergency_id):
+
+    emergency = get_object_or_404(EmergencyRequest, id=emergency_id)
+
+    if request.user.role != "hospital":
+        return redirect("home")
+
+    current_hospital = emergency.hospital
+    speciality = emergency.required_speciality
+
+    hospitals = HospitalProfile.objects.filter(
+        status="approved"
+    ).exclude(id=current_hospital.id)
+
+    matching = []
+
+    for h in hospitals:
+
+        if h.specialities and speciality in h.specialities:
+            matching.append(h)
+
+    search_pool = matching if matching else hospitals
+
+    nearest = None
+    min_distance = float("inf")
+
+    for h in search_pool:
+
+        if h.latitude and h.longitude:
+
+            distance = math.sqrt(
+                (h.latitude - emergency.latitude) ** 2 +
+                (h.longitude - emergency.longitude) ** 2
+            )
+
+            if distance < min_distance:
+                min_distance = distance
+                nearest = h
+
+    if nearest:
+
+        emergency.previous_hospital = current_hospital
+        emergency.hospital = nearest
+        emergency.rerouted = True
+
+        # 🔥 RESET STATUS PROPERLY
+        emergency.status = "pending"
+
+        emergency.save()
+
+    return redirect("hospital_dashboard")
+
+
+
+
+@login_required
 def start_emergency(request, emergency_id):
 
     emergency = get_object_or_404(EmergencyRequest, id=emergency_id)
@@ -109,7 +174,7 @@ def start_emergency(request, emergency_id):
     return redirect("hospital_dashboard")
 
 
-
+@login_required
 def mark_emergency_completed(request, emergency_id):
 
     emergency = get_object_or_404(EmergencyRequest, id=emergency_id)
@@ -122,9 +187,6 @@ def mark_emergency_completed(request, emergency_id):
 
     return redirect("hospital_dashboard")
 
-
-
-from django.shortcuts import get_object_or_404
 
 def emergency_status(request, emergency_id):
 

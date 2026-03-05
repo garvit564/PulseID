@@ -100,7 +100,7 @@
         <p>No Approved Hospitals Yet</p>
       {% endfor %}
 
-      <hr />
+    
 
       <!-- 🔵 Citizen Only Feature -->
       {% if request.user.is_authenticated and request.user.role == 'citizen' %}
