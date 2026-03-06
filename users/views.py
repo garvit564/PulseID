@@ -10,6 +10,7 @@ import random
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
 from records.models import TreatmentRecord
+from .services.health_ai import generate_health_summary
 
 
 
@@ -78,11 +79,31 @@ def citizen_profile(request):
         patient=request.user
     ).order_by("-created_at")
 
+    ai_summary = None
+
+    # 👇 Button click hone par AI run hoga
+    if request.method == "POST":
+
+        history_text = ""
+
+        if records.exists():
+            for r in records:
+                history_text += f"""
+Disease: {r.disease}
+Medication: {r.medication}
+Date: {r.created_at}
+---
+"""
+        else:
+            history_text = "No medical records available."
+
+        ai_summary = generate_health_summary(history_text)
+
     return render(request, "citizen_profile.html", {
         "user": request.user,
-        "records": records
+        "records": records,
+        "ai_summary": ai_summary
     })
-
 
 # ---------------- LOGOUT ----------------
 

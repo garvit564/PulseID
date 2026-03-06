@@ -27,38 +27,54 @@
 const input = document.getElementById("location_input");
 const suggestionsBox = document.getElementById("suggestions");
 
-input.addEventListener("input", function() {
+let debounceTimer;
 
-    let query = this.value;
+input.addEventListener("input", function () {
 
-    if (query.length < 2) {
-        suggestionsBox.innerHTML = "";
-        return;
-    }
+    clearTimeout(debounceTimer);
 
-    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`)
-        .then(response => response.json())
-        .then(data => {
+    debounceTimer = setTimeout(() => {
 
+        let query = input.value;
+
+        if (query.length < 3) {
             suggestionsBox.innerHTML = "";
+            return;
+        }
 
-            data.slice(0,5).forEach(place => {
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&q=${query}&limit=8&countrycodes=in`)
+            .then(response => response.json())
+            .then(data => {
 
-                let div = document.createElement("div");
-                div.innerText = place.display_name;
-                div.style.cursor = "pointer";
-                div.style.padding = "5px";
-                div.style.borderBottom = "1px solid #ddd";
+                suggestionsBox.innerHTML = "";
 
-                div.onclick = function() {
-                    input.value = place.display_name;
-                    document.getElementById("latitude").value = place.lat;
-                    document.getElementById("longitude").value = place.lon;
-                    suggestionsBox.innerHTML = "";
-                }
+                data.forEach(place => {
 
-                suggestionsBox.appendChild(div);
+                    let div = document.createElement("div");
+
+                    div.innerText = place.display_name;
+                    div.style.cursor = "pointer";
+                    div.style.padding = "6px";
+                    div.style.borderBottom = "1px solid #ddd";
+
+                    div.onclick = function () {
+
+                        input.value = place.display_name;
+
+                        document.getElementById("latitude").value = place.lat;
+                        document.getElementById("longitude").value = place.lon;
+
+                        suggestionsBox.innerHTML = "";
+
+                    };
+
+                    suggestionsBox.appendChild(div);
+
+                });
+
             });
-        });
+
+    }, 400);
+
 });
 </script>

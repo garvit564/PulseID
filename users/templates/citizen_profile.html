@@ -1,63 +1,106 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>My Health Profile</title>
     <style>
-        body { font-family: Arial; background:#f4f6f9; }
-        .container { width:900px; margin:40px auto; }
-        .card {
-            background:white;
-            padding:20px;
-            border-radius:10px;
-            box-shadow:0 0 10px rgba(0,0,0,0.1);
-            margin-bottom:20px;
-        }
-        .record {
-            border-bottom:1px solid #ddd;
-            padding:10px 0;
-        }
+      body {
+        font-family: Arial;
+        background: #f4f6f9;
+      }
+      .container {
+        width: 900px;
+        margin: 40px auto;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+      .record {
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+      }
     </style>
-</head>
-<body>
-
-<div class="container">
-
-    <!-- 🔹 Basic Info -->
-    <div class="card">
+  </head>
+  <body>
+    <div class="container">
+      <!-- 🔹 Basic Info -->
+      <div class="card">
         <h2>My Health Profile</h2>
 
-        <p><strong>Name:</strong> {{ user.name }}</p>
-        <p><strong>Email:</strong> {{ user.email }}</p>
-        <p><strong>Health ID:</strong> {{ user.unique_health_id }}</p>
+        <p>
+          <strong>Name:</strong> {{ user.name }}
+        </p>
+        <p>
+          <strong>Email:</strong> {{ user.email }}
+        </p>
+        <p>
+          <strong>Health ID:</strong> {{ user.unique_health_id }}
+        </p>
 
         {% if user.qr_code %}
-            <p><strong>QR Code:</strong></p>
-            <img src="{{ user.qr_code.url }}" width="150">
+          <p>
+            <strong>QR Code:</strong>
+          </p>
+          <img src="{{ user.qr_code.url }}" width="150" />
         {% endif %}
-    </div>
+      </div>
 
-    <!-- 🔹 Treatment History -->
-    <div class="card">
+      <h3>🧠 AI Health Summary</h3>
+
+      <form method="POST">
+        {% csrf_token %}
+        <button type="submit" style="
+background:#0d6efd;
+color:white;
+border:none;
+padding:10px 18px;
+border-radius:6px;
+cursor:pointer;
+">Generate AI Summary</button>
+      </form>
+
+      {% if ai_summary %}
+        <div style="
+background:#f5f7fa;
+padding:15px;
+border-radius:8px;
+margin-top:15px;
+">{{ ai_summary|linebreaks }}</div>
+      {% endif %}
+
+      <!-- 🔹 Treatment History -->
+      <div class="card">
         <h3>Treatment History</h3>
 
         {% if records %}
-            {% for record in records %}
-                <div class="record">
-                    <p><strong>Disease:</strong> {{ record.disease }}</p>
-                    <p><strong>Medication:</strong> {{ record.medication }}</p>
-                    <p><strong>Doctor:</strong> Dr. {{ record.doctor.user.name }}</p>
-                    <p><strong>Hospital:</strong> {{ record.hospital.hospital_name }}</p>
-                    <p><small>{{ record.created_at }}</small></p>
-                </div>
-            {% endfor %}
+          {% for record in records %}
+            <div class="record">
+              <p>
+                <strong>Disease:</strong> {{ record.disease }}
+              </p>
+              <p>
+                <strong>Medication:</strong> {{ record.medication }}
+              </p>
+              <p>
+                <strong>Doctor:</strong> Dr. {{ record.doctor.user.name }}
+              </p>
+              <p>
+                <strong>Hospital:</strong> {{ record.hospital.hospital_name }}
+              </p>
+              <p>
+                <small>{{ record.created_at }}</small>
+              </p>
+            </div>
+          {% endfor %}
         {% else %}
-            <p>No Medical Records Found</p>
+          <p>No Medical Records Found</p>
         {% endif %}
+      </div>
+
+      <a href="/">Back to Home</a>
     </div>
-
-    <a href="/">Back to Home</a>
-
-</div>
-
-</body>
+  </body>
 </html>
