@@ -1,81 +1,100 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Patient Card</title>
     <style>
-        body { font-family: Arial; background:#f4f6f9; }
-        .container {
-            width:800px;
-            margin:40px auto;
-        }
-        .card {
-            background:white;
-            padding:20px;
-            border-radius:10px;
-            box-shadow:0 0 10px rgba(0,0,0,0.1);
-            margin-bottom:20px;
-        }
-        input, textarea {
-            width:100%;
-            padding:8px;
-            margin:5px 0;
-        }
-        button {
-            padding:6px 10px;
-            background:#0d6efd;
-            color:white;
-            border:none;
-            border-radius:5px;
-        }
-        .delete {
-            background:#dc3545;
-        }
+      body {
+        font-family: Arial;
+        background: #f4f6f9;
+      }
+      .container {
+        width: 800px;
+        margin: 40px auto;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+      input,
+      textarea {
+        width: 100%;
+        padding: 8px;
+        margin: 5px 0;
+      }
+      button {
+        padding: 6px 10px;
+        background: #0d6efd;
+        color: white;
+        border: none;
+        border-radius: 5px;
+      }
+      .delete {
+        background: #dc3545;
+      }
     </style>
-</head>
-<body>
-
-<div class="container">
-
-    <!-- 🔹 Patient Bio (Non Editable) -->
-    <div class="card">
+  </head>
+  <body>
+    <div class="container">
+      <!-- 🔹 Patient Bio (Non Editable) -->
+      <div class="card">
         <h2>Patient Information</h2>
-        <p><strong>Name:</strong> {{ patient.name }}</p>
-        <p><strong>Email:</strong> {{ patient.email }}</p>
-        <p><strong>Health ID:</strong> {{ patient.unique_health_id }}</p>
-    </div>
+        <p>
+          <strong>Name:</strong> {{ patient.name }}
+        </p>
+        <p>
+          <strong>Email:</strong> {{ patient.email }}
+        </p>
+        <p>
+          <strong>Health ID:</strong> {{ patient.unique_health_id }}
+        </p>
+      </div>
 
-    <!-- 🔹 Add Disease -->
-    <div class="card">
+      <!-- 🔹 Add Disease -->
+      <div class="card">
         <h3>Add Disease / Medication</h3>
 
-        <form method="POST" action="/doctor/add-record/{{ patient.id }}/">
-            {% csrf_token %}
-            <input type="text" name="disease" placeholder="Disease" required>
-            <textarea name="medication" placeholder="Medication" required></textarea>
-            <button type="submit">Add Record</button>
+        <form method="POST" enctype="multipart/form-data" action="/doctor/add-record/{{ patient.id }}/">
+          {% csrf_token %}
+          <input type="text" name="disease" placeholder="Disease" required />
+          <textarea name="medication" placeholder="Medication" required></textarea>
+          <label>Upload Medical Report</label>
+          <input type="file" name="report_image" accept="image/*" required />
+          <button type="submit">Add Record</button>
         </form>
-    </div>
+      </div>
 
-    <!-- 🔹 Existing Records -->
-    <div class="card">
+      <!-- 🔹 Existing Records -->
+      <div class="card">
         <h3>Existing Records</h3>
 
         {% for record in records %}
-            <div style="border-bottom:1px solid #ddd; padding:10px;">
-                <p><strong>Disease:</strong> {{ record.disease }}</p>
-                <p><strong>Medication:</strong> {{ record.medication }}</p>
-                <p><small>{{ record.created_at }}</small></p>
+          <div style="border-bottom:1px solid #ddd; padding:10px;">
+            <p>
+              <strong>Disease:</strong> {{ record.disease }}
+            </p>
+            <p>
+              <strong>Medication:</strong> {{ record.medication }}
+            </p>
+            {% if record.report_image %}
+                <strong>Medical Report:</strong>
+                <img src="{{ record.report_image.url }}" width="200" />
+              {%else%}
+              <P> no medical report uploaded </P>
+              {% endif %}
+              
+            <p>
+              <small>{{ record.created_at }}</small>
+            </p>
 
-                <a href="/doctor/delete-record/{{ record.id }}/">
-                    <button class="delete">Delete</button>
-                </a>
-            </div>
+            <a href="/doctor/delete-record/{{ record.id }}/"><button class="delete">Delete</button></a>
+          </div>
         {% empty %}
-            <p>No Records Found</p>
+          <p>No Records Found</p>
         {% endfor %}
+      </div>
     </div>
-
-</div>
-
-</body>
+  </body>
 </html>

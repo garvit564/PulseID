@@ -12,7 +12,7 @@ class TreatmentRecord(models.Model):
 
     disease = models.CharField(max_length=255)
     medication = models.TextField()
-
+    report_image = models.ImageField(upload_to="medical_reports/", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

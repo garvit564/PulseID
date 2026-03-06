@@ -186,13 +186,15 @@ def add_record(request, patient_id):
 
         disease = request.POST.get("disease")
         medication = request.POST.get("medication")
+        report_image = request.FILES.get("report_image")
 
         TreatmentRecord.objects.create(
             patient=patient,
             doctor=doctor_profile,
             hospital=doctor_profile.hospital,
             disease=disease,
-            medication=medication
+            medication=medication,
+            report_image=report_image
         )
 
         MedicalActionLog.objects.create(

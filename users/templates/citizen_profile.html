@@ -84,6 +84,12 @@ margin-top:15px;
               <p>
                 <strong>Medication:</strong> {{ record.medication }}
               </p>
+              {% if record.report_image %}
+                <strong>Medical Report:</strong>
+                <img src="{{ record.report_image.url }}" width="200" />
+              {%else%}
+              <P> no medical report uploaded </P>
+              {% endif %}
               <p>
                 <strong>Doctor:</strong> Dr. {{ record.doctor.user.name }}
               </p>
