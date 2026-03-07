@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -11,6 +12,7 @@ from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
 from records.models import TreatmentRecord
 from .services.health_ai import generate_health_summary
+from .services.site_ai import site_assistant
 
 
 
@@ -217,3 +219,40 @@ def qr_profile_view(request, user_id):
         "user": user,
         "records": records
     })
+
+
+
+
+
+def ai_chat(request):
+
+    response = None
+
+    if request.method == "POST":
+
+        question = request.POST.get("question")
+
+        print("USER QUESTION:", question)
+
+        response = site_assistant(question)
+
+        print("AI RESPONSE:", response)
+
+    return render(request, "ai_chat.html", {
+        "response": response
+    })
+
+
+
+
+def ai_chat_api(request):
+
+    if request.method == "POST":
+
+        question = request.POST.get("message")
+
+        answer = site_assistant(question)
+
+        return JsonResponse({
+            "reply": answer
+        })

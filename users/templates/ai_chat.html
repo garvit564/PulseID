@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>PulseID AI Assistant</title>
+
+<link rel="stylesheet" href="{% static 'css/ai.css' %}">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="ai-container">
+
+<h2>🤖 PulseID AI Assistant</h2>
+
+<div id="chatbox"></div>
+
+<div class="input-area">
+
+<input type="text" id="message" placeholder="Ask anything about PulseID...">
+
+<button onclick="sendMessage()" class="send-btn">
+➤
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const CSRF_TOKEN = "{{ csrf_token }}"
+
+</script>
+
+<script src="{% static 'js/ai.js' %}"></script>
+
+</body>
+
+</html>

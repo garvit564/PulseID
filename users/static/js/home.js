@@ -1,23 +1,25 @@
-particlesJS("particles-js", {
+AOS.init({
+duration:1000
+});
+
+particlesJS("particles-js",{
 
 particles:{
 
-number:{value:20},
+number:{value:25},
 
-// color:{value:"#22c55e"},
-color:{value:"#FFFFFF"},
+color:{value:"#22c55e"},
 
 size:{value:3},
 
-move:{speed:0.8}
+move:{speed:1}
 
 }
 
 });
 
-AOS.init({
-duration:1000
-});
+
+
 
 
 window.addEventListener("scroll",()=>{
@@ -36,3 +38,9 @@ nav.style.background="rgba(255,255,255,0.08)";
 }
 
 });
+
+
+
+
+
+

@@ -14,4 +14,7 @@ urlpatterns = [
     path("access/<str:health_id>/", views.access_by_qr, name="access_by_qr"),
     path("verify-otp/", views.verify_qr_otp, name="verify_qr_otp"),
     path("qr-profile/<int:user_id>/", views.qr_profile_view, name="qr_profile_view"),
+    path("ai/", views.ai_chat, name="ai_chat"),
+    path("ai/chat/", views.ai_chat_api, name="ai_chat_api"),
+
 ]

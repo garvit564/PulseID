@@ -37,6 +37,7 @@ urlpatterns = [
     path("doctor/", include("doctors.urls")),
     path("emergency/", include("emergency.urls")),
     path("logout/", global_logout, name="logout"),
+    path("records/", include("records.urls")),
 ]
 
 

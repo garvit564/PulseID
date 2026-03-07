@@ -27,23 +27,34 @@
 🫀 Pulse<span>ID</span>
 </div>
 
+<!-- ECG pulse line -->
+<div class="nav-pulse"></div>
+
 <div class="nav-links">
 
 {% if request.user.is_authenticated %}
 
+<div class="profile-menu">
+
 <span class="welcome">Hi {{ request.user.name }}</span>
 
+<div class="dropdown">
+
 {% if request.user.role == 'citizen' %}
-<a class="nav-link" href="/citizen/profile/">Profile</a>
+<a href="/citizen/profile/">Profile</a>
 {% elif request.user.role == 'hospital' %}
-<a class="nav-link" href="/hospital/dashboard/">Hospital</a>
+<a href="/hospital/dashboard/">Hospital Dashboard</a>
 {% elif request.user.role == 'doctor' %}
-<a class="nav-link" href="/doctor/dashboard/">Doctor</a>
+<a href="/doctor/dashboard/">Doctor Dashboard</a>
 {% elif request.user.role == 'govt' %}
-<a class="nav-link" href="/govt/dashboard/">Govt</a>
+<a href="/govt/dashboard/">Govt Dashboard</a>
 {% endif %}
 
-<a class="nav-btn logout" href="/logout/">Logout</a>
+<a href="/logout/">Logout</a>
+
+</div>
+
+</div>
 
 {% else %}
 
@@ -55,9 +66,19 @@
 <a class="nav-link" href="/hospital/login/">Hospital Login</a>
 <a class="nav-link" href="/doctor/login/">Doctor Login</a>
 
-<a class="nav-btn" href="/govt/login/">Govt Login</a>
-
 {% endif %}
+
+<!-- AI button -->
+
+<a href="/citizen/ai/" class="ai-btn">
+🤖 AI Assistant
+</a>
+
+<!-- Emergency quick button -->
+
+<a href="{% url 'emergency_form' %}" class="nav-emergency">
+🚑 Emergency
+</a>
 
 </div>
 
