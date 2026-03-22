@@ -2,6 +2,8 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+
+from pulseid.pulseid import settings
 from .models import User
 from hospital.models import HospitalProfile
 from doctors.models import DoctorProfile
@@ -224,7 +226,7 @@ def access_by_qr(request, health_id):
         args=(
             "PulseID Access OTP",
             f"Your OTP is {otp}",
-            "noreply@pulseid.com",
+            settings.EMAIL_HOST_USER,
             [user.email],
         ),
     ).start()
