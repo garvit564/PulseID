@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-from pulseid.pulseid import settings
+from django.conf import settings
 from .models import User
 from hospital.models import HospitalProfile
 from doctors.models import DoctorProfile
