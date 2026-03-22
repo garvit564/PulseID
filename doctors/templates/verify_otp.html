@@ -1,40 +1,37 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Verify OTP</title>
 
-    <link rel="stylesheet" href="{% static 'css/verify_otp.css' %}">
-</head>
-<body>
-
-<div class="wrapper">
-
-    <div class="card">
-
+    <link rel="stylesheet" href="{% static 'css/verify_otp.css' %}" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="card">
         <h2>🔐 Verify OTP</h2>
+        {% if debug_otp %}
+          <p style="color:red; font-weight:bold;">OTP: {{ debug_otp }}</p>
+        {% endif %}
         <p class="subtitle">Enter the 6-digit code sent to you</p>
 
         {% if error %}
-            <p class="error">{{ error }}</p>
+          <p class="error">{{ error }}</p>
         {% endif %}
 
         <form method="POST" action="/doctor/verify-otp/">
-            {% csrf_token %}
+          {% csrf_token %}
 
-            <div class="input-group">
-                <input type="text" name="otp" maxlength="6" required>
-                <label>Enter OTP</label>
-            </div>
+          <div class="input-group">
+            <input type="text" name="otp" maxlength="6" required />
+            <label>Enter OTP</label>
+          </div>
 
-            <button type="submit">Verify</button>
+          <button type="submit">Verify</button>
         </form>
-
+      </div>
     </div>
-
-</div>
-
-</body>
+  </body>
 </html>

@@ -131,7 +131,9 @@ def access_patient(request):
             fail_silently=True,
         )
 
-        return render(request, "verify_otp.html")
+        return render(request, "verify_otp.html", {
+            "debug_otp": otp   # 👈 screen pe show karne ke liye
+        })
 
     return render(request, "access_patient.html")
 
