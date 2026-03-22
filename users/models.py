@@ -83,7 +83,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
         # Generate QR with FULL ACCESS URL
         if not self.qr_code:
-            access_url = f"http://127.0.0.1:8000/citizen/access/{self.unique_health_id}/"
+            access_url = f"pulseid.onrender.com/citizen/access/{self.unique_health_id}/"
 
             qr = qrcode.make(access_url)
 
