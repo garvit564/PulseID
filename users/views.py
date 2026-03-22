@@ -220,10 +220,10 @@ def access_by_qr(request, health_id):
         send_mail(
             "PulseID Access OTP",
             f"Your OTP is {otp}",
-            settings.EMAIL_HOST_USER,
+            settings.DEFAULT_FROM_EMAIL,
             [user.email],
             fail_silently=False,
-        )
+)
     except Exception as e:
         print("EMAIL ERROR:", e)
 
