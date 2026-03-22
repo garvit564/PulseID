@@ -207,19 +207,6 @@ def access_by_health_id(request):
 
 
 
-def send_otp_email(email, otp):
-    try:
-        send_mail(
-            "PulseID Access OTP",
-            f"Your OTP is {otp}",
-            settings.EMAIL_HOST_USER,  # ❗ correct sender
-            [email],
-            fail_silently=False,
-        )
-    except Exception as e:
-        print("EMAIL ERROR:", e)
-
-
 def access_by_qr(request, health_id):
 
     user = get_object_or_404(User, unique_health_id=health_id, role="citizen")
@@ -229,10 +216,14 @@ def access_by_qr(request, health_id):
     request.session["qr_otp"] = otp
     request.session["qr_user_id"] = user.id
 
-    # 🔥 IMPORTANT: background thread
-    thread = threading.Thread(target=send_otp_email, args=(user.email, otp))
-    thread.daemon = True
-    thread.start()
+    # 🔥 direct send (timeout avoid karne ke liye timeout increase karenge)
+    send_mail(
+        "PulseID Access OTP",
+        f"Your OTP is {otp}",
+        settings.EMAIL_HOST_USER,
+        [user.email],
+        fail_silently=False,
+    )
 
     return render(request, "qr_verify.html", {"health_id": health_id})
 
