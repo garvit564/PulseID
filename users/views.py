@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -230,6 +230,23 @@ def access_by_qr(request, health_id):
     return render(request, "qr_verify.html", {"health_id": health_id ,  "debug_otp": otp})
 
 
+
+
+def test_email(request):
+    try:
+        send_mail(
+            "Test Mail",
+            "Hello from PulseID",
+            settings.DEFAULT_FROM_EMAIL,
+            ["garvitthakral3@gmail.com"],
+            fail_silently=False,
+        )
+        return HttpResponse("MAIL SENT SUCCESSFULLY")
+    except Exception as e:
+        return HttpResponse(f"ERROR: {e}")
+    
+
+    
 
 def verify_qr_otp(request):
 

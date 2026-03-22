@@ -20,7 +20,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
-from users.views import home
+from users.views import home, test_email
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 
@@ -38,6 +38,7 @@ urlpatterns = [
     path("emergency/", include("emergency.urls")),
     path("logout/", global_logout, name="logout"),
     path("records/", include("records.urls")),
+    path('test-email/', test_email),
 ]
 
 
