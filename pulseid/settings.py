@@ -162,7 +162,7 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("BREVO_SMTP_KEY")
 
 DEFAULT_FROM_EMAIL = 'garvitthakral3@gmail.com'
-
+BREVO_API_KEY = os.getenv("BREVO_API_KEY")
 
 
 import os

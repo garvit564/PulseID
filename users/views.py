@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 from django.conf import settings
+import requests
 from .models import User
 from hospital.models import HospitalProfile
 from doctors.models import DoctorProfile
@@ -217,18 +218,31 @@ def access_by_qr(request, health_id):
     request.session["qr_user_id"] = user.id
 
     try:
-        send_mail(
-            "PulseID Access OTP",
-            f"Your OTP is {otp}",
-            settings.DEFAULT_FROM_EMAIL,
-            [user.email],
-            fail_silently=False,
-)
+        url = "https://api.brevo.com/v3/smtp/email"
+
+        headers = {
+            "accept": "application/json",
+            "api-key": settings.BREVO_API_KEY,   # 👈 env se aayega
+            "content-type": "application/json"
+        }
+
+        data = {
+            "sender": {"email": "garvitthakral3@gmail.com"},  # 👈 verified sender
+            "to": [{"email": user.email}],
+            "subject": "PulseID Access OTP",
+            "htmlContent": f"<p>Your OTP is <b>{otp}</b></p>"
+        }
+
+        response = requests.post(url, json=data, headers=headers)
+        print("BREVO RESPONSE:", response.status_code, response.text)
+
     except Exception as e:
         print("EMAIL ERROR:", e)
 
-    return render(request, "qr_verify.html", {"health_id": health_id ,  "debug_otp": otp})
-
+    return render(request, "qr_verify.html", {
+        "health_id": health_id,
+        "debug_otp": otp   # 👈 optional (remove later)
+    })
 
 
 
@@ -246,7 +260,7 @@ def test_email(request):
         return HttpResponse(f"ERROR: {e}")
     
 
-    
+
 
 def verify_qr_otp(request):
 
