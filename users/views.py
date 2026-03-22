@@ -208,7 +208,7 @@ def access_by_health_id(request):
 
 
 def send_otp_email(subject, message, from_email, recipient_list):
-    send_mail(subject, message, from_email, recipient_list, fail_silently=True)
+    send_mail(subject, message, from_email, recipient_list, fail_silently=False)
 
 
 def access_by_qr(request, health_id):
