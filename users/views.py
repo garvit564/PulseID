@@ -13,6 +13,7 @@ from django.shortcuts import get_object_or_404
 from records.models import TreatmentRecord
 from .services.health_ai import generate_health_summary
 from .services.site_ai import site_assistant
+import threading
 
 
 
@@ -180,6 +181,34 @@ def access_by_health_id(request):
 
 
 
+# def access_by_qr(request, health_id):
+
+#     user = get_object_or_404(User, unique_health_id=health_id, role="citizen")
+
+#     otp = str(random.randint(100000, 999999))
+
+#     request.session["qr_otp"] = otp
+#     request.session["qr_user_id"] = user.id
+
+#     send_mail(
+#         "PulseID Access OTP",
+#         f"Your OTP is {otp}",
+#         "noreply@pulseid.com",
+#         [user.email],
+#         fail_silently=True,
+#     )
+
+#     return render(request, "qr_verify.html", {"health_id": health_id})
+
+
+
+
+
+
+def send_otp_email(subject, message, from_email, recipient_list):
+    send_mail(subject, message, from_email, recipient_list, fail_silently=True)
+
+
 def access_by_qr(request, health_id):
 
     user = get_object_or_404(User, unique_health_id=health_id, role="citizen")
@@ -189,15 +218,20 @@ def access_by_qr(request, health_id):
     request.session["qr_otp"] = otp
     request.session["qr_user_id"] = user.id
 
-    send_mail(
-        "PulseID Access OTP",
-        f"Your OTP is {otp}",
-        "noreply@pulseid.com",
-        [user.email],
-        fail_silently=True,
-    )
+    # 👇 background me email bhej
+    threading.Thread(
+        target=send_otp_email,
+        args=(
+            "PulseID Access OTP",
+            f"Your OTP is {otp}",
+            "noreply@pulseid.com",
+            [user.email],
+        ),
+    ).start()
 
     return render(request, "qr_verify.html", {"health_id": health_id})
+
+
 
 
 
