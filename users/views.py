@@ -216,17 +216,18 @@ def access_by_qr(request, health_id):
     request.session["qr_otp"] = otp
     request.session["qr_user_id"] = user.id
 
-    # 🔥 direct send (timeout avoid karne ke liye timeout increase karenge)
-    send_mail(
-        "PulseID Access OTP",
-        f"Your OTP is {otp}",
-        settings.EMAIL_HOST_USER,
-        [user.email],
-        fail_silently=False,
-    )
+    try:
+        send_mail(
+            "PulseID Access OTP",
+            f"Your OTP is {otp}",
+            settings.EMAIL_HOST_USER,
+            [user.email],
+            fail_silently=False,
+        )
+    except Exception as e:
+        print("EMAIL ERROR:", e)
 
     return render(request, "qr_verify.html", {"health_id": health_id})
-
 
 
 
