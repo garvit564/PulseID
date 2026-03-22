@@ -227,7 +227,7 @@ def access_by_qr(request, health_id):
     except Exception as e:
         print("EMAIL ERROR:", e)
 
-    return render(request, "qr_verify.html", {"health_id": health_id})
+    return render(request, "qr_verify.html", {"health_id": health_id ,  "debug_otp": otp})
 
 
 
