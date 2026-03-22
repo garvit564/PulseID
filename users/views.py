@@ -183,60 +183,60 @@ def access_by_health_id(request):
 
 
 
-# def access_by_qr(request, health_id):
-
-#     user = get_object_or_404(User, unique_health_id=health_id, role="citizen")
-
-#     otp = str(random.randint(100000, 999999))
-
-#     request.session["qr_otp"] = otp
-#     request.session["qr_user_id"] = user.id
-
-#     send_mail(
-#         "PulseID Access OTP",
-#         f"Your OTP is {otp}",
-#         "noreply@pulseid.com",
-#         [user.email],
-#         fail_silently=True,
-#     )
-
-#     return render(request, "qr_verify.html", {"health_id": health_id})
-
-
-
-
-
-
-# 🔥 async email sender
-def send_otp_email(email, otp):
-    try:
-        send_mail(
-            subject="PulseID Access OTP",
-            message=f"Your OTP is {otp}",
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[email],
-            fail_silently=False,
-        )
-    except Exception as e:
-        print("EMAIL ERROR:", e)
-
-
 def access_by_qr(request, health_id):
 
     user = get_object_or_404(User, unique_health_id=health_id, role="citizen")
 
     otp = str(random.randint(100000, 999999))
 
-    # 🔐 session store
     request.session["qr_otp"] = otp
     request.session["qr_user_id"] = user.id
 
-    # 🚀 background email
-    thread = threading.Thread(target=send_otp_email, args=(user.email, otp))
-    thread.daemon = True
-    thread.start()
+    send_mail(
+        "PulseID Access OTP",
+        f"Your OTP is {otp}",
+        "noreply@pulseid.com",
+        [user.email],
+        fail_silently=True,
+    )
 
     return render(request, "qr_verify.html", {"health_id": health_id})
+
+
+
+
+
+
+# # 🔥 async email sender
+# def send_otp_email(email, otp):
+#     try:
+#         send_mail(
+#             subject="PulseID Access OTP",
+#             message=f"Your OTP is {otp}",
+#             from_email=settings.EMAIL_HOST_USER,
+#             recipient_list=[email],
+#             fail_silently=False,
+#         )
+#     except Exception as e:
+#         print("EMAIL ERROR:", e)
+
+
+# def access_by_qr(request, health_id):
+
+#     user = get_object_or_404(User, unique_health_id=health_id, role="citizen")
+
+#     otp = str(random.randint(100000, 999999))
+
+#     # 🔐 session store
+#     request.session["qr_otp"] = otp
+#     request.session["qr_user_id"] = user.id
+
+#     # 🚀 background email
+#     thread = threading.Thread(target=send_otp_email, args=(user.email, otp))
+#     thread.daemon = True
+#     thread.start()
+
+#     return render(request, "qr_verify.html", {"health_id": health_id})
 
 
 
