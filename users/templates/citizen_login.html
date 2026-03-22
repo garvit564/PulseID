@@ -1,31 +1,47 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Citizen Login</title>
-    <style>
-        body { font-family: Arial; background:#f5f7fa; display:flex; justify-content:center; align-items:center; height:100vh; }
-        .box { background:white; padding:30px; width:350px; box-shadow:0 0 15px rgba(0,0,0,0.1); border-radius:8px; }
-        h2 { text-align:center; }
-        input { width:100%; padding:8px; margin:8px 0; }
-        button { width:100%; padding:10px; background:#198754; color:white; border:none; }
-        button:hover { background:#146c43; }
-        .error { color:red; text-align:center; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PulseID</title>
+
+    <link rel="stylesheet" href="{% static 'css/citizen_login.css' %}">
 </head>
 <body>
-<div class="box">
-    <h2>Citizen Login</h2>
 
-    {% if error %}
-    <p class="error">{{ error }}</p>
-    {% endif %}
+<div class="container">
+    <div class="card">
 
-    <form method="POST">
-        {% csrf_token %}
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-    </form>
+        <h2>Welcome Back 👋</h2>
+        <p class="subtitle">Login to your PulseID</p>
+
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="input-box">
+                <input type="email" name="email" required>
+                <label>Email Address</label>
+            </div>
+
+            <div class="input-box">
+                <input type="password" name="password" required>
+                <label>Password</label>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <p class="bottom-text">
+            New here? <a href="/citizen/register/">Create account</a>
+        </p>
+
+    </div>
 </div>
+
 </body>
 </html>

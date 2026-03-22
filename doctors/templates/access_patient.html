@@ -1,46 +1,41 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Access Patient</title>
-    <style>
-        body { font-family: Arial; background:#f4f6f9; text-align:center; }
-        .card {
-            background:white;
-            width:400px;
-            margin:80px auto;
-            padding:30px;
-            border-radius:10px;
-            box-shadow:0 0 15px rgba(0,0,0,0.1);
-        }
-        input, button {
-            padding:8px;
-            width:100%;
-            margin:8px 0;
-        }
-        button {
-            background:#0d6efd;
-            color:white;
-            border:none;
-            border-radius:5px;
-        }
-    </style>
+
+    <link rel="stylesheet" href="{% static 'css/access_patient.css' %}">
 </head>
 <body>
 
-<div class="card">
-    <h2>Access Patient Data</h2>
+<div class="wrapper">
 
-    {% if error %}
-        <p style="color:red;">{{ error }}</p>
-    {% endif %}
+    <div class="card">
 
-    <form method="POST">
-        {% csrf_token %}
-        <input type="text" name="health_id" placeholder="Enter Patient Health ID" required>
-        <button type="submit">Send OTP</button>
-    </form>
+        <h2>🔐 Access Patient</h2>
+        <p class="subtitle">Enter Health ID to request OTP</p>
 
-    <a href="/doctor/dashboard/">Back</a>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <input type="text" name="health_id" required>
+                <label>Patient Health ID</label>
+            </div>
+
+            <button type="submit">Send OTP</button>
+        </form>
+
+        <a href="/doctor/dashboard/" class="back">← Back</a>
+
+    </div>
+
 </div>
 
 </body>

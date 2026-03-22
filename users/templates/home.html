@@ -27,7 +27,6 @@
 🫀 Pulse<span>ID</span>
 </div>
 
-<!-- ECG pulse line -->
 <div class="nav-pulse"></div>
 
 <div class="nav-links">
@@ -68,13 +67,9 @@
 
 {% endif %}
 
-<!-- AI button -->
-
 <a href="/citizen/ai/" class="ai-btn">
 🤖 AI Assistant
 </a>
-
-<!-- Emergency quick button -->
 
 <a href="{% url 'emergency_form' %}" class="nav-emergency">
 🚑 Emergency
@@ -85,7 +80,6 @@
 </div>
 
 </nav>
-
 
 <!-- HERO -->
 
@@ -165,7 +159,6 @@ points="
 
 </section>
 
-
 <!-- HOSPITALS -->
 
 <section class="hospital-section">
@@ -196,6 +189,14 @@ points="
 
 </div>
 
+<div class="view-all-container">
+
+<a href="{% url 'all_hospitals' %}">
+<button class="btn-view-all">View All Hospitals</button>
+</a>
+
+</div>
+
 </section>
 
 
@@ -217,7 +218,6 @@ points="
 
 </section>
 
-
 <!-- EMERGENCY -->
 
 <section class="emergency" data-aos="zoom-in">
@@ -234,6 +234,70 @@ Request Emergency
 
 </section>
 
+<!-- FOOTER -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div class="footer-col">
+
+<h3>PulseID</h3>
+
+<p>
+Next generation digital health identity system with AI verification
+and emergency services.
+</p>
+
+</div>
+
+<div class="footer-col">
+
+<h4>Quick Links</h4>
+
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="/citizen/register/">Register</a></li>
+<li><a href="/citizen/login/">Login</a></li>
+<li><a href="/citizen/ai/">AI Assistant</a></li>
+</ul>
+
+</div>
+
+<div class="footer-col">
+
+<h4>Services</h4>
+
+<ul>
+<li>Digital Health ID</li>
+<li>Hospital Access</li>
+<li>AI Health Analysis</li>
+<li>Emergency Ambulance</li>
+</ul>
+
+</div>
+
+<div class="footer-col">
+
+<h4>Contact</h4>
+
+<ul>
+<li>Email: support@pulseid.com</li>
+<li>Phone: +91 00000 00000</li>
+<li>India</li>
+</ul>
+
+</div>
+
+</div>
+
+<div class="footer-bottom">
+
+<p>© 2026 PulseID. All rights reserved.</p>
+
+</div>
+
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>

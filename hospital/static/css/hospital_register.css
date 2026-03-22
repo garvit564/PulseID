@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Layout */
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Left */
+.left {
+    flex: 1;
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px;
+}
+
+.left h1 {
+    font-size: 32px;
+}
+
+.left p {
+    margin-top: 10px;
+    opacity: 0.9;
+}
+
+/* Right */
+.right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f8fafc;
+}
+
+/* Form */
+.form {
+    width: 380px;
+}
+
+.form h2 {
+    margin-bottom: 20px;
+}
+
+/* Inputs */
+.input-group {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+    background: transparent;
+}
+
+.input-group label {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    font-size: 13px;
+    color: #888;
+    transition: 0.3s;
+    background: white;
+    padding: 0 5px;
+}
+
+.input-group input:focus + label,
+.input-group input:valid + label {
+    top: -7px;
+    font-size: 11px;
+    color: #3b82f6;
+}
+
+/* Chips */
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.chips label {
+    padding: 6px 10px;
+    background: #e0f2fe;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.chips input {
+    display: none;
+}
+
+.chips input:checked + label,
+.chips label:has(input:checked) {
+    background: #3b82f6;
+    color: white;
+}
+
+/* Suggestions */
+.suggestions {
+    background: white;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background: #f1f5f9;
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .left {
+        text-align: center;
+        padding: 30px;
+    }
+}

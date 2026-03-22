@@ -1,83 +1,76 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify OTP - PulseID</title>
-    <style>
-        body {
-            font-family: Arial;
-            background: #f4f6f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
 
-        .card {
-            background: white;
-            padding: 35px;
-            width: 350px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            text-align: center;
-        }
-
-        h2 {
-            margin-bottom: 20px;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background: #198754;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #157347;
-        }
-
-        .error {
-            color: red;
-            margin-bottom: 10px;
-        }
-
-        .info {
-            color: gray;
-            font-size: 14px;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/qr_verify.css' %}">
 </head>
 <body>
 
-<div class="card">
-    <h2>Enter OTP</h2>
+<div class="wrapper">
 
-    <p class="info">OTP has been sent to the registered email.</p>
+    <div class="otp-box">
 
-    {% if error %}
-        <p class="error">{{ error }}</p>
-    {% endif %}
+        <h2>🔐 Verify OTP</h2>
+        <p class="subtitle">Enter the 6-digit code sent to your email</p>
 
-    <form method="POST" action="{% url 'verify_qr_otp' %}">
-        {% csrf_token %}
-        <input type="text" name="otp" placeholder="Enter 6-digit OTP" required>
-        <button type="submit">Verify OTP</button>
-    </form>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
 
-    <br>
-    <a href="/">Back to Home</a>
+        <form method="POST" action="{% url 'verify_qr_otp' %}">
+            {% csrf_token %}
+
+            <div class="otp-inputs">
+                <input type="text" maxlength="1" required>
+                <input type="text" maxlength="1" required>
+                <input type="text" maxlength="1" required>
+                <input type="text" maxlength="1" required>
+                <input type="text" maxlength="1" required>
+                <input type="text" maxlength="1" required>
+            </div>
+
+            <!-- hidden actual value -->
+            <input type="hidden" name="otp" id="otp_value">
+
+            <button type="submit">Verify</button>
+        </form>
+
+        <a href="/" class="back">← Back to Home</a>
+
+    </div>
+
 </div>
+
+<script>
+    const inputs = document.querySelectorAll(".otp-inputs input");
+    const hiddenInput = document.getElementById("otp_value");
+
+    inputs.forEach((input, index) => {
+        input.addEventListener("input", () => {
+            if (input.value.length === 1 && index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+
+            updateOTP();
+        });
+
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Backspace" && !input.value && index > 0) {
+                inputs[index - 1].focus();
+            }
+        });
+    });
+
+    function updateOTP() {
+        let otp = "";
+        inputs.forEach(input => otp += input.value);
+        hiddenInput.value = otp;
+    }
+</script>
 
 </body>
 </html>

@@ -1,0 +1,20 @@
+<h2>All Hospitals</h2>
+
+<ul style="list-style:none; padding:0;">
+
+{% for hospital in hospitals %}
+
+<li style="margin:10px 0;">
+
+<a href="/citizen/hospital/{{ hospital.id }}/" 
+style="text-decoration:none; font-size:18px; color:#0d6efd;">
+
+🏥 {{ hospital.hospital_name }} — {{ hospital.city }}
+
+</a>
+
+</li>
+
+{% endfor %}
+
+</ul>

@@ -1,141 +1,160 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Hospital Dashboard</title>
-    <style>
-        body { font-family: Arial; background:#f4f6f9; text-align:center; }
-        .card { background:white; width:500px; margin:50px auto; padding:25px; border-radius:10px; box-shadow:0 0 15px rgba(0,0,0,0.1); }
-        .approved { color:green; font-weight:bold; }
-        .pending { color:red; font-weight:bold; }
-    </style>
-  </head>
-  <body>
-    <div class="card">
-      <h2>Hospital Dashboard</h2>
-      <p>
-        <strong>Name:</strong> {{ profile.hospital_name }}
-      </p>
-      <p>
-        <strong>License:</strong> {{ profile.license_number }}
-      </p>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospital Dashboard</title>
 
-      {% if profile.status == 'approved' %}
-        <p style="color:green; font-weight:bold;">Approved by Government</p>
-      {% elif profile.status == 'rejected' %}
-        <p style="color:red; font-weight:bold;">Rejected by Government</p>
-      {% else %}
-        <p style="color:orange; font-weight:bold;">Pending Government Approval</p>
-      {% endif %}
+<link rel="stylesheet" href="{% static 'css/hospital_dashboard.css' %}">
+</head>
+<body>
 
-      <br />
-      <hr />
+<div class="container">
 
-      {% if profile.status == 'approved' %}
-        <hr />
-        <h3>Doctor Management</h3>
+    <!-- HEADER -->
+    <div class="header">
+        <h2>{{ profile.hospital_name }}</h2>
+        <a href="/logout/">Logout</a>
+    </div>
 
-        <a href="/doctor/register/" style="padding:8px 15px; background:#0d6efd; color:white; border-radius:6px; text-decoration:none;">Register Doctor</a>
+    <!-- INFO -->
+    <div class="box">
+        <p><strong>License:</strong> {{ profile.license_number }}</p>
 
-        <br /><br />
+        {% if profile.status == 'approved' %}
+            <span class="status approved">Approved</span>
+        {% elif profile.status == 'rejected' %}
+            <span class="status rejected">Rejected</span>
+        {% else %}
+            <span class="status pending">Pending</span>
+        {% endif %}
+    </div>
 
-        <a href="/doctor/login/" style="padding:8px 15px; background:#6610f2; color:white; border-radius:6px; text-decoration:none;">Doctor Login</a>
-      {% endif %}
-      <a href="/logout/">Logout</a>
+    {% if profile.status == 'approved' %}
 
-      {% if profile.status == 'approved' %}
-        <hr />
-        <h3>Pending Doctor Requests</h3>
+    <!-- ACTIONS -->
+    <div class="box actions">
+        <a href="/doctor/register/" class="btn">+ Register Doctor</a>
+        <a href="/doctor/login/" class="btn secondary">Doctor Login</a>
+    </div>
+
+    <!-- PENDING -->
+    <div class="box">
+        <h3>Pending Doctors</h3>
 
         {% for doctor in pending_doctors %}
-          <p>
-            {{ doctor.user.name }} -
-            {{ doctor.specialization }}
-            <a href="{% url 'approve_doctor_by_hospital' doctor.id %}">Approve</a>
-          </p>
+        <div class="row">
+            <div>
+                <strong>{{ doctor.user.name }}</strong>
+                <p>{{ doctor.specialization }}</p>
+            </div>
+            <a href="{% url 'approve_doctor_by_hospital' doctor.id %}" class="approve">Approve</a>
+        </div>
         {% empty %}
-          <p>No Pending Doctors</p>
+        <p class="no-data">No pending doctors</p>
         {% endfor %}
+    </div>
 
+    <!-- APPROVED -->
+    <div class="box">
         <h3>Approved Doctors</h3>
 
         {% if approved_doctors %}
-          <table style="width:100%; margin-top:10px; border-collapse:collapse;">
+        <table>
             <tr>
-              <th style="border:1px solid #ddd; padding:8px;">Name</th>
-              <th style="border:1px solid #ddd; padding:8px;">Specialization</th>
-              <th style="border:1px solid #ddd; padding:8px;">License</th>
+                <th>Name</th>
+                <th>Specialization</th>
+                <th>License</th>
             </tr>
 
             {% for doctor in approved_doctors %}
-              <tr>
-                <td style="border:1px solid #ddd; padding:8px;">{{ doctor.user.name }}</td>
-                <td style="border:1px solid #ddd; padding:8px;">{{ doctor.specialization }}</td>
-                <td style="border:1px solid #ddd; padding:8px;">{{ doctor.license_number }}</td>
-              </tr>
-            {% endfor %}
-          </table>
-        {% else %}
-          <p style="color:gray;">No Approved Doctors Yet</p>
-        {% endif %}
-      {% endif %}
-
-      <hr />
-      <h3>🚑 Emergency Requests</h3>
-
-      {% if emergency_requests %}
-        <table>
-          <tr>
-            <th>Patient</th>
-            <th>Reason</th>
-            <th>AI Analysis</th>
-            <th>Priority</th>
-            <th>Required Speciality</th>
-            <th>Location</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-
-          {% for e in emergency_requests %}
             <tr>
-              <td>{{ e.patient.name }}</td>
-              <td>{{ e.reason }}</td>
-              <td style="max-width:300px;">
-                <div style="font-size:13px; background:#f8f9fa; padding:8px; border-radius:6px;">{{ e.ai_analysis }}</div>
-              </td>
-              <td>
-                {% if e.priority == 'critical' %}
-                  <span style="color:red;font-weight:bold;">CRITICAL</span>
-                {% elif e.priority == 'high' %}
-                  <span style="color:orange;">HIGH</span>
-                {% else %}
-                  {{ e.priority|upper }}
-                {% endif %}
-              </td>
-              <td>
-                <p>
-                  <strong></strong> {{ e.required_speciality }}
-                </p>
-              </td>
-              <td>{{ e.location }}</td>
-              <td>{{ e.status }}</td>
-              <td>
-                <td>
-                  <a href="{% url 'ambulance_runout' e.id %}"><button style="background:red;color:white;">🚑 Ambulance Runout</button></a>
-                  {% if e.status == 'pending' %}
-                    <a href="{% url 'start_emergency' e.id %}"><button style="background:orange;color:white;">Take Action</button></a>
-                  {% elif e.status == 'in_progress' %}
-                    <a href="{% url 'complete_emergency' e.id %}"><button style="background:green;color:white;">Mark Completed</button></a>
-                  {% else %}
-                    ✓ Completed
-                  {% endif %}
-                </td>
-              </td>
+                <td>{{ doctor.user.name }}</td>
+                <td>{{ doctor.specialization }}</td>
+                <td>{{ doctor.license_number }}</td>
             </tr>
-          {% endfor %}
+            {% endfor %}
         </table>
-      {% else %}
-        <p>No Emergency Requests</p>
-      {% endif %}
+        {% else %}
+        <p class="no-data">No doctors yet</p>
+        {% endif %}
     </div>
-  </body>
+
+    {% endif %}
+
+    <!-- EMERGENCY -->
+    <div class="box emergency">
+        <h3>🚑 Emergency Requests</h3>
+
+        {% if emergency_requests %}
+        <table>
+            <tr>
+                <th>Patient</th>
+                <th>Reason</th>
+                <th>AI</th>
+                <th>Priority</th>
+                <th>Speciality</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+
+            {% for e in emergency_requests %}
+            <tr>
+                <td>{{ e.patient.name }}</td>
+                <td>{{ e.reason }}</td>
+
+                <!-- 🔥 COLLAPSIBLE AI -->
+                <td>
+                    <button class="ai-btn" onclick="toggleAI('ai{{ forloop.counter }}')">
+                        View
+                    </button>
+
+                    <div id="ai{{ forloop.counter }}" class="ai-popup">
+                        {{ e.ai_analysis }}
+                    </div>
+                </td>
+
+                <td>
+                    {% if e.priority == 'critical' %}
+                        <span class="critical">CRITICAL</span>
+                    {% elif e.priority == 'high' %}
+                        <span class="high">HIGH</span>
+                    {% else %}
+                        {{ e.priority }}
+                    {% endif %}
+                </td>
+
+                <td>{{ e.required_speciality }}</td>
+                <td>{{ e.location }}</td>
+                <td>{{ e.status }}</td>
+
+                <td>
+                    <a href="{% url 'ambulance_runout' e.id %}" class="danger">🚑</a>
+
+                    {% if e.status == 'pending' %}
+                        <a href="{% url 'start_emergency' e.id %}" class="warn">Start</a>
+                    {% elif e.status == 'in_progress' %}
+                        <a href="{% url 'complete_emergency' e.id %}" class="success">Done</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p class="no-data">No emergencies</p>
+        {% endif %}
+    </div>
+
+</div>
+
+<script>
+function toggleAI(id) {
+    let el = document.getElementById(id);
+    el.classList.toggle("show");
+}
+</script>
+
+</body>
 </html>

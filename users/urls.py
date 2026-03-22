@@ -9,6 +9,7 @@ urlpatterns = [
     path("profile/", views.citizen_profile, name="citizen_profile"),
     path("logout/", views.citizen_logout, name="citizen_logout"),
     path("hospital/<int:hospital_id>/", views.hospital_detail, name="hospital_detail"),
+    path("hospitals/", views.all_hospitals, name="all_hospitals"),
     path("doctor/<int:doctor_id>/", views.doctor_public_profile, name="doctor_public_profile"),
     path("access-id/", views.access_by_health_id, name="access_by_health_id"),
     path("access/<str:health_id>/", views.access_by_qr, name="access_by_qr"),

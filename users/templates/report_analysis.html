@@ -1,4 +1,4 @@
-<h2>AI Medical Report Analysis</h2>
+{% comment %} <h2>AI Medical Report Analysis</h2>
 
 <img src="{{ record.report_image.url }}" width="250">
 
@@ -8,4 +8,52 @@
 
 <p>{{ analysis|linebreaks }}</p>
 
-<a href="/citizen/profile/">Back</a>
+<a href="/citizen/profile/">Back</a> {% endcomment %}
+
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Report Analysis</title>
+
+    <link rel="stylesheet" href="{% static 'css/report_analysis.css' %}">
+</head>
+<body>
+
+<div class="page">
+
+    <!-- Header -->
+    <div class="header">
+        <h2>🧠 AI Medical Report</h2>
+        <a href="/citizen/profile/" class="back-btn">← Back</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+
+        <!-- Left: Image -->
+        <div class="image-section">
+            <img src="{{ record.report_image.url }}" alt="Report">
+        </div>
+
+        <!-- Right: Analysis -->
+        <div class="analysis-section">
+
+            <h3>AI Summary</h3>
+
+            <div class="analysis-box">
+                <p>{{ analysis|linebreaks }}</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

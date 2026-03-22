@@ -1,32 +1,53 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>{{ doctor.user.name }}</title>
-    <style>
-        body { font-family: Arial; background:#f4f6f9; text-align:center; }
-        .card {
-            background:white;
-            width:500px;
-            margin:50px auto;
-            padding:30px;
-            border-radius:10px;
-            box-shadow:0 0 15px rgba(0,0,0,0.1);
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. {{ doctor.user.name }}</title>
+
+    <link rel="stylesheet" href="{% static 'css/doctor_public_profile.css' %}">
 </head>
 <body>
 
-<div class="card">
-    <h2>Dr. {{ doctor.user.name }}</h2>
+<div class="layout">
 
-    <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
-    <p><strong>Hospital:</strong> {{ doctor.hospital.hospital_name }}</p>
-    <p><strong>License:</strong> {{ doctor.license_number }}</p>
+    <!-- LEFT SIDE (Profile Highlight) -->
+    <div class="left">
+        <div class="profile">
+            <div class="avatar">👨‍⚕️</div>
+            <h2>Dr. {{ doctor.user.name }}</h2>
+            <p class="verify">✔ Govt Verified</p>
+        </div>
+    </div>
 
-    <p style="color:green; font-weight:bold;">Govt Verified ✔</p>
+    <!-- RIGHT SIDE (Details) -->
+    <div class="right">
 
-    <br>
-    <a href="/">Back to Home</a>
+        <h3>Doctor Information</h3>
+
+        <div class="row">
+            <span>Specialization</span>
+            <p>{{ doctor.specialization }}</p>
+        </div>
+
+        <div class="row">
+            <span>Hospital</span>
+            <p>{{ doctor.hospital.hospital_name }}</p>
+        </div>
+
+        <div class="row">
+            <span>License Number</span>
+            <p>{{ doctor.license_number }}</p>
+        </div>
+
+        <div class="actions">
+            <a href="/" class="btn light">← Back</a>
+            <a href="#" class="btn primary">Consult Now</a>
+        </div>
+
+    </div>
+
 </div>
 
 </body>

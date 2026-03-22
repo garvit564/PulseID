@@ -1,91 +1,76 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Doctor Register - PulseID</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial;
-            background: linear-gradient(135deg, #20c997, #0d6efd);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doctor Register - PulseID</title>
 
-        .card {
-            background: white;
-            padding: 35px;
-            width: 400px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background: #0d6efd;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #084298;
-        }
-
-        .error {
-            color: red;
-            text-align: center;
-        }
-    </style>
+<link rel="stylesheet" href="{% static 'css/doctor_register.css' %}">
 </head>
 <body>
 
-<div class="card">
-    <h2>Doctor Registration</h2>
+<div class="wrapper">
 
-    {% if error %}
-        <p class="error">{{ error }}</p>
-    {% endif %}
+    <div class="card">
 
-    <form method="POST">
-        {% csrf_token %}
-        <input type="text" name="name" placeholder="Full Name" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="text" name="specialization" placeholder="Specialization" required>
-        <input type="text" name="license_number" placeholder="Medical License Number" required>
+        <h2>👨‍⚕️ Doctor Registration</h2>
+        <p class="subtitle">Join PulseID network</p>
 
-        <select name="hospital" required>
-    <option value="">Select Hospital</option>
-    {% for hospital in hospitals %}
-        <option value="{{ hospital.id }}">
-            {{ hospital.hospital_name }}
-        </option>
-    {% endfor %}
-</select>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
 
-        <button type="submit">Register</button>
-    </form>
+        <form method="POST">
+            {% csrf_token %}
 
-    <p style="text-align:center;margin-top:10px;">
-        <a href="/doctor/login/">Already Registered?</a>
-    </p>
+            <div class="input-group">
+                <input type="text" name="name" required>
+                <label>Full Name</label>
+            </div>
+
+            <div class="input-group">
+                <input type="email" name="email" required>
+                <label>Email</label>
+            </div>
+
+            <div class="input-group">
+                <input type="password" name="password" required>
+                <label>Password</label>
+            </div>
+
+            <div class="input-group">
+                <input type="text" name="specialization" required>
+                <label>Specialization</label>
+            </div>
+
+            <div class="input-group">
+                <input type="text" name="license_number" required>
+                <label>Medical License Number</label>
+            </div>
+
+            <!-- Hospital Select -->
+            <div class="select-group">
+                <select name="hospital" required>
+                    <option value="">Select Hospital</option>
+                    {% for hospital in hospitals %}
+                        <option value="{{ hospital.id }}">
+                            {{ hospital.hospital_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit">Register</button>
+
+        </form>
+
+        <p class="bottom">
+            Already Registered? <a href="/doctor/login/">Login</a>
+        </p>
+
+    </div>
+
 </div>
 
 </body>

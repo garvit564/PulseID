@@ -372,3 +372,196 @@ color:white;
 cursor:pointer;
 
 }
+
+
+
+
+/* ================================= */
+/* RESPONSIVE DASHBOARD */
+/* ================================= */
+
+
+/* ---------- TABLETS (≤ 1000px) ---------- */
+
+@media (max-width:1000px){
+
+.dashboard{
+flex-direction:column;
+}
+
+.sidebar{
+width:100%;
+padding:25px;
+align-items:center;
+}
+
+.health-card{
+max-width:420px;
+}
+
+.main{
+padding:30px;
+}
+
+.records{
+grid-template-columns:1fr;
+}
+
+}
+
+
+/* ---------- SMALL TABLETS ---------- */
+
+@media (max-width:768px){
+
+.sidebar{
+padding:20px;
+}
+
+.health-card{
+max-width:380px;
+}
+
+.user-info h2{
+font-size:20px;
+}
+
+.health-number{
+font-size:14px;
+}
+
+.main{
+padding:25px;
+}
+
+.section{
+padding:20px;
+}
+
+.records{
+grid-template-columns:1fr;
+gap:16px;
+}
+
+.record-card{
+padding:14px;
+}
+
+}
+
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width:600px){
+
+.sidebar{
+padding:18px;
+}
+
+.health-card{
+max-width:340px;
+padding:16px;
+}
+
+.qr{
+width:60px;
+}
+
+.card-footer{
+font-size:11px;
+}
+
+.home-btn{
+margin-top:20px;
+padding:8px 16px;
+font-size:14px;
+}
+
+.main{
+padding:20px;
+}
+
+.section{
+padding:18px;
+margin-bottom:20px;
+}
+
+.ai-summary{
+font-size:14px;
+}
+
+.btn-main{
+width:100%;
+margin-top:10px;
+}
+
+.view-btn,
+.analyze-btn{
+width:100%;
+margin-top:8px;
+margin-left:0;
+}
+
+.records{
+grid-template-columns:1fr;
+}
+
+}
+
+
+/* ---------- SMALL PHONES ---------- */
+
+@media (max-width:420px){
+
+.health-card{
+max-width:300px;
+}
+
+.user-info h2{
+font-size:18px;
+}
+
+.health-number{
+font-size:13px;
+}
+
+.qr{
+width:55px;
+}
+
+.section h2{
+font-size:20px;
+}
+
+.record-card{
+padding:12px;
+}
+
+}
+
+
+/* ---------- VERY SMALL PHONES ---------- */
+
+@media (max-width:360px){
+
+.health-card{
+max-width:260px;
+}
+
+.user-info h2{
+font-size:16px;
+}
+
+.health-number{
+font-size:12px;
+}
+
+.qr{
+width:50px;
+}
+
+.section{
+padding:15px;
+}
+
+}

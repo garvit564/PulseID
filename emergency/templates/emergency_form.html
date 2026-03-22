@@ -1,27 +1,55 @@
-<h2>🚑 Emergency Request</h2>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emergency Request</title>
 
-{% if error %}
-<p style="color:red;">{{ error }}</p>
-{% endif %}
+<link rel="stylesheet" href="{% static 'css/emergency_form.css' %}">
+</head>
+<body>
 
-<form method="POST">
-    {% csrf_token %}
+<div class="wrapper">
 
-    <input type="text" name="health_id" placeholder="Unique Health ID" required><br><br>
+    <div class="card">
 
-    <textarea name="reason" placeholder="Describe emergency..." required></textarea><br><br>
+        <h2>🚑 Emergency Request</h2>
+        <p class="subtitle">Quickly request ambulance assistance</p>
 
-    <input type="text" id="location_input" name="location" placeholder="Enter Location" required>
-    <div id="suggestions"></div>
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
 
-    <input type="hidden" name="latitude" id="latitude">
-    <input type="hidden" name="longitude" id="longitude">
+        <form method="POST">
+            {% csrf_token %}
 
-    <br>
-    <button type="submit" style="background:red;color:white;">
-        Request Ambulance
-    </button>
-</form>
+            <div class="input-group">
+                <input type="text" name="health_id" required>
+                <label>Unique Health ID</label>
+            </div>
+
+            <div class="input-group">
+                <textarea name="reason" required></textarea>
+                <label>Describe Emergency</label>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="location_input" name="location" required autocomplete="off">
+                <label>Location</label>
+            </div>
+
+            <div id="suggestions" class="suggestions"></div>
+
+            <input type="hidden" name="latitude" id="latitude">
+            <input type="hidden" name="longitude" id="longitude">
+
+            <button type="submit">🚑 Request Ambulance</button>
+        </form>
+
+    </div>
+
+</div>
 
 <script>
 const input = document.getElementById("location_input");
@@ -43,7 +71,7 @@ input.addEventListener("input", function () {
         }
 
         fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&q=${query}&limit=8&countrycodes=in`)
-            .then(response => response.json())
+            .then(res => res.json())
             .then(data => {
 
                 suggestionsBox.innerHTML = "";
@@ -51,25 +79,18 @@ input.addEventListener("input", function () {
                 data.forEach(place => {
 
                     let div = document.createElement("div");
+                    div.classList.add("suggestion-item");
 
                     div.innerText = place.display_name;
-                    div.style.cursor = "pointer";
-                    div.style.padding = "6px";
-                    div.style.borderBottom = "1px solid #ddd";
 
                     div.onclick = function () {
-
                         input.value = place.display_name;
-
                         document.getElementById("latitude").value = place.lat;
                         document.getElementById("longitude").value = place.lon;
-
                         suggestionsBox.innerHTML = "";
-
                     };
 
                     suggestionsBox.appendChild(div);
-
                 });
 
             });
@@ -78,3 +99,6 @@ input.addEventListener("input", function () {
 
 });
 </script>
+
+</body>
+</html>

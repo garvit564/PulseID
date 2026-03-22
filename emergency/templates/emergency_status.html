@@ -1,39 +1,77 @@
-<h2>🚑 Emergency Request Status</h2>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emergency Status</title>
 
-<p>
-  <strong>Priority:</strong> {{ emergency.priority|upper }}
-</p>
+<link rel="stylesheet" href="{% static 'css/emergency_status.css' %}">
+</head>
+<body>
 
-{% if emergency.hospital %}
-  <p>
-    <strong>Assigned Hospital:</strong> {{ emergency.hospital.hospital_name }}
-  </p>
-{% else %}
-  <p>No hospital assigned yet.</p>
-{% endif %}
+<div class="wrapper">
 
-<hr />
+    <div class="card">
 
-<h3>Status:</h3>
+        <h2>🚑 Emergency Status</h2>
 
-{% if emergency.status == 'pending' %}
-  <p style="color:orange;">⏳ Waiting for hospital to take action...</p>
-{% elif emergency.status == 'in_progress' %}
-  <p style="color:red;">🚑 Hospital is taking action. Ambulance reaching you shortly.</p>
-{% elif emergency.status == 'completed' %}
-  <p style="color:green;">✅ Emergency handled successfully.</p>
-  
-{% endif %}
-{% if emergency.status == "rerouted" %}
-<p style="color:orange;font-weight:bold;">
-⚠ Emergency has been re-routed to another hospital.
-</p>
-{% endif %}
+        <!-- Priority -->
+        <div class="priority-box">
+            Priority: <span class="{{ emergency.priority }}">
+                {{ emergency.priority|upper }}
+            </span>
+        </div>
 
-<hr />
+        <!-- Hospital -->
+        <div class="info">
+            {% if emergency.hospital %}
+                <p><strong>Hospital:</strong> {{ emergency.hospital.hospital_name }}</p>
+            {% else %}
+                <p class="muted">No hospital assigned yet</p>
+            {% endif %}
+        </div>
 
-<h3>AI Analysis:</h3>
-<p>{{ emergency.ai_analysis }}</p>
+        <!-- Status -->
+        <div class="status-box">
 
-<br />
-<a href="/">Back to Home</a>
+            {% if emergency.status == 'pending' %}
+                <p class="pending">⏳ Waiting for hospital...</p>
+            {% elif emergency.status == 'in_progress' %}
+                <p class="progress">🚑 Ambulance is on the way</p>
+            {% elif emergency.status == 'completed' %}
+                <p class="done">✅ Emergency handled</p>
+            {% endif %}
+
+            {% if emergency.status == "rerouted" %}
+                <p class="reroute">⚠ Re-routed to another hospital</p>
+            {% endif %}
+
+        </div>
+
+        <!-- AI Analysis -->
+        <div class="ai-section">
+            <button onclick="toggleAI()" class="ai-btn">
+                View AI Analysis
+            </button>
+
+            <div id="aiBox" class="ai-box">
+                {{ emergency.ai_analysis }}
+            </div>
+        </div>
+
+        <!-- Back -->
+        <a href="/" class="back">← Back to Home</a>
+
+    </div>
+
+</div>
+
+<script>
+function toggleAI() {
+    document.getElementById("aiBox").classList.toggle("show");
+}
+</script>
+
+</body>
+</html>

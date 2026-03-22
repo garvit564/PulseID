@@ -22,9 +22,20 @@ from .services.site_ai import site_assistant
 
 def home(request):
     from hospital.models import HospitalProfile
-    hospitals = HospitalProfile.objects.filter(status="approved")
+    hospitals = HospitalProfile.objects.filter(status="approved")[:3]
     return render(request, "home.html", {"hospitals": hospitals})
 
+
+
+
+
+def all_hospitals(request):
+
+    hospitals = HospitalProfile.objects.filter(status="approved")
+
+    return render(request, "all_hospitals.html", {
+        "hospitals": hospitals
+    })
 
 # ---------------- CITIZEN REGISTER ----------------
 

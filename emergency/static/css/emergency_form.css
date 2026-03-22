@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body {
+    font-family:'Inter',sans-serif;
+    background:#f8fafc;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+/* Wrapper */
+.wrapper {
+    width:100%;
+    padding:20px;
+}
+
+/* Card */
+.card {
+    max-width:420px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:16px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.08);
+}
+
+/* Title */
+h2 {
+    text-align:center;
+    margin-bottom:5px;
+}
+
+.subtitle {
+    text-align:center;
+    font-size:13px;
+    color:#64748b;
+    margin-bottom:20px;
+}
+
+/* Error */
+.error {
+    color:red;
+    text-align:center;
+    margin-bottom:10px;
+}
+
+/* Inputs */
+.input-group {
+    position:relative;
+    margin-bottom:18px;
+}
+
+.input-group input,
+.input-group textarea {
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    outline:none;
+    font-size:14px;
+    background:transparent;
+}
+
+.input-group textarea {
+    resize:none;
+    height:80px;
+}
+
+/* Labels */
+.input-group label {
+    position:absolute;
+    left:12px;
+    top:12px;
+    font-size:13px;
+    color:#888;
+    transition:0.3s;
+    background:white;
+    padding:0 5px;
+}
+
+/* Focus */
+.input-group input:focus,
+.input-group textarea:focus {
+    border-color:#ef4444;
+    box-shadow:0 0 10px rgba(239,68,68,0.2);
+}
+
+/* Floating */
+.input-group input:focus + label,
+.input-group input:valid + label,
+.input-group textarea:focus + label,
+.input-group textarea:valid + label {
+    top:-8px;
+    font-size:11px;
+    color:#ef4444;
+}
+
+/* Suggestions */
+.suggestions {
+    background:white;
+    border-radius:10px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+    margin-bottom:10px;
+}
+
+.suggestion-item {
+    padding:10px;
+    cursor:pointer;
+    border-bottom:1px solid #eee;
+}
+
+.suggestion-item:hover {
+    background:#f1f5f9;
+}
+
+/* Button */
+button {
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:#ef4444;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+button:hover {
+    background:#dc2626;
+}
+
+/* Responsive */
+@media (max-width:400px) {
+    .card {
+        padding:20px;
+    }
+}

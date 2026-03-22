@@ -1,109 +1,72 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>{{ hospital.hospital_name }} - PulseID</title>
-    <style>
-      body {
-        font-family: Arial;
-        background: #f4f6f9;
-        margin: 0;
-      }
-      
-      .navbar {
-        background: #0d6efd;
-        color: white;
-        padding: 15px;
-        display: flex;
-        justify-content: space-between;
-      }
-      
-      .navbar a {
-        color: white;
-        text-decoration: none;
-        margin-left: 15px;
-      }
-      
-      .container {
-        width: 80%;
-        margin: 30px auto;
-      }
-      
-      .hospital-box {
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 30px;
-      }
-      
-      .doctor-card {
-        background: white;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-        margin: 10px;
-        width: 250px;
-        display: inline-block;
-        vertical-align: top;
-      }
-      
-      .doctor-card button {
-        padding: 6px 10px;
-        background: #0d6efd;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-      
-      .doctor-card button:hover {
-        background: #084298;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- 🔵 Navbar -->
-    <div class="navbar">
-      <div>
-        <strong>PulseID</strong>
-      </div>
-      <div>
-        <a href="/">Home</a>
-      </div>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ hospital.hospital_name }}</title>
+
+    <link rel="stylesheet" href="{% static 'css/hospital_detail.css' %}">
+</head>
+<body>
+
+<!-- Top bar -->
+<header class="topbar">
+    <div class="logo">PulseID</div>
+    <a href="/" class="home-link">Home</a>
+</header>
+
+<!-- Main -->
+<section class="main">
+
+    <!-- Hospital Header -->
+    <div class="hospital-header">
+        <div class="left">
+            <h1>{{ hospital.hospital_name }}</h1>
+            <p class="location">{{ hospital.city }}</p>
+        </div>
+
+        <div class="right">
+            <span class="verify">✔ Verified Hospital</span>
+            <p class="license">License: {{ hospital.license_number }}</p>
+        </div>
     </div>
 
-    <div class="container">
-      <!-- 🏥 Hospital Info -->
-      <div class="hospital-box">
-        <h2>{{ hospital.hospital_name }}</h2>
-        <p>
-          <strong>Address:</strong> {{ hospital.address }}
-        </p>
-        <p>
-          <strong>License:</strong> {{ hospital.license_number }}
-        </p>
-      </div>
+    <!-- Divider -->
+    <div class="divider"></div>
 
-      <!-- 👨‍⚕ Doctors Section -->
-      <h3>Approved Doctors</h3>
+    <!-- Doctors -->
+    <div class="section-head">
+        <h2>Doctors</h2>
+        <p>Approved professionals</p>
+    </div>
 
-      {% if doctors %}
+    <div class="doctor-list">
         {% for doctor in doctors %}
-          <div class="doctor-card">
-            <h4>{{ doctor.user.name }}</h4>
-            <p>
-              <strong>Specialization:</strong> {{ doctor.specialization }}
-            </p>
-            <p>
-              <strong>License:</strong> {{ doctor.license_number }}
-            </p>
+        <div class="doctor-row">
 
-            <a href="{% url 'doctor_public_profile' doctor.id %}"><button>View Profile</button></a>
-          </div>
+            <div class="doc-left">
+                <div class="circle">👨‍⚕️</div>
+                <div>
+                    <h3>Dr. {{ doctor.user.name }}</h3>
+                    <p class="spec">{{ doctor.specialization }}</p>
+                </div>
+            </div>
+
+            <div class="doc-right">
+                <span class="doc-license">{{ doctor.license_number }}</span>
+                <a href="{% url 'doctor_public_profile' doctor.id %}" class="view-btn">
+                    View →
+                </a>
+            </div>
+
+        </div>
+        {% empty %}
+        <p class="no-data">No doctors available</p>
         {% endfor %}
-      {% else %}
-        <p>No Approved Doctors Available</p>
-      {% endif %}
     </div>
-  </body>
+
+</section>
+
+</body>
 </html>

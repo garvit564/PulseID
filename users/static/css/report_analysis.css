@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #f8fafc;
+}
+
+/* Page */
+.page {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.header h2 {
+    font-size: 22px;
+}
+
+.back-btn {
+    text-decoration: none;
+    font-size: 13px;
+    color: #3b82f6;
+}
+
+/* Content */
+.content {
+    display: flex;
+    gap: 30px;
+}
+
+/* Image */
+.image-section {
+    flex: 1;
+}
+
+.image-section img {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Analysis */
+.analysis-section {
+    flex: 1;
+}
+
+.analysis-section h3 {
+    margin-bottom: 10px;
+}
+
+/* Box */
+.analysis-box {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    line-height: 1.6;
+    font-size: 14px;
+    color: #334155;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .content {
+        flex-direction: column;
+    }
+}

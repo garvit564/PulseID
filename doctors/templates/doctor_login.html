@@ -1,68 +1,48 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Login - PulseID</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial;
-            background: linear-gradient(135deg, #6610f2, #0dcaf0);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
 
-        .card {
-            background: white;
-            padding: 35px;
-            width: 350px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            text-align: center;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background: #6610f2;
-            color: white;
-            border: none;
-            border-radius: 6px;
-        }
-
-        button:hover {
-            background: #520dc2;
-        }
-
-        .error {
-            color: red;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/doctor_login.css' %}">
 </head>
 <body>
 
-<div class="card">
-    <h2>Doctor Login</h2>
+<div class="wrapper">
 
-    {% if error %}
-        <p class="error">{{ error }}</p>
-    {% endif %}
+    <div class="card">
 
-    <form method="POST">
-        {% csrf_token %}
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-    </form>
+        <h2>👨‍⚕️ Doctor Login</h2>
+        <p class="subtitle">Access your dashboard</p>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <input type="email" name="email" required>
+                <label>Email</label>
+            </div>
+
+            <div class="input-group">
+                <input type="password" name="password" required>
+                <label>Password</label>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <p class="bottom">
+            New doctor? <a href="/doctor/register/">Register</a>
+        </p>
+
+    </div>
+
 </div>
 
 </body>

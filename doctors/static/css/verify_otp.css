@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body {
+    font-family:'Inter',sans-serif;
+    background: linear-gradient(135deg,#eef2ff,#f8fafc);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+/* Wrapper */
+.wrapper {
+    width:100%;
+    padding:20px;
+}
+
+/* Card */
+.card {
+    max-width:350px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:16px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    text-align:center;
+}
+
+/* Title */
+h2 {
+    margin-bottom:5px;
+}
+
+.subtitle {
+    font-size:13px;
+    color:#64748b;
+    margin-bottom:20px;
+}
+
+/* Error */
+.error {
+    color:red;
+    margin-bottom:10px;
+}
+
+/* Input */
+.input-group {
+    position:relative;
+    margin-bottom:20px;
+}
+
+.input-group input {
+    width:100%;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid #e2e8f0;
+    outline:none;
+    text-align:center;
+    font-size:18px;
+    letter-spacing:4px;
+}
+
+/* Label */
+.input-group label {
+    position:absolute;
+    left:12px;
+    top:14px;
+    font-size:13px;
+    color:#888;
+    transition:0.3s;
+    background:white;
+    padding:0 5px;
+}
+
+/* Focus */
+.input-group input:focus {
+    border-color:#6366f1;
+    box-shadow:0 0 10px rgba(99,102,241,0.2);
+}
+
+/* Floating */
+.input-group input:focus + label,
+.input-group input:valid + label {
+    top:-8px;
+    font-size:11px;
+    color:#6366f1;
+}
+
+/* Button */
+button {
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    background:#6366f1;
+    color:white;
+    font-weight:500;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+button:hover {
+    background:#4f46e5;
+}
+
+/* Responsive */
+@media (max-width:400px) {
+    .card {
+        padding:20px;
+    }
+}

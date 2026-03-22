@@ -1,79 +1,58 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Doctor Dashboard</title>
-    <style>
-      body {
-        font-family: Arial;
-        background: #f4f6f9;
-        text-align: center;
-      }
-      
-      .card {
-        background: white;
-        width: 500px;
-        margin: 50px auto;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-      }
-      
-      .approved {
-        color: green;
-        font-weight: bold;
-      }
-      
-      .pending {
-        color: orange;
-        font-weight: bold;
-      }
-      
-      .rejected {
-        color: red;
-        font-weight: bold;
-      }
-      
-      a {
-        text-decoration: none;
-      }
-      
-      .btn {
-        padding: 8px 15px;
-        background: #dc3545;
-        color: white;
-        border-radius: 6px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="card">
-      <h2>Doctor Dashboard</h2>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doctor Dashboard</title>
 
-      <p>
-        <strong>Name:</strong> {{ profile.user.name }}
-      </p>
-      <p>
-        <strong>Email:</strong> {{ profile.user.email }}
-      </p>
-      <p>
-        <strong>Hospital:</strong> {{ profile.hospital.hospital_name }}
-      </p>
-      <p>
-        <strong>Specialization:</strong> {{ profile.specialization }}
-      </p>
+<link rel="stylesheet" href="{% static 'css/doctor_dashboard.css' %}">
+</head>
+<body>
 
-      {% if profile.status == 'approved' %}
-        <p class="approved">Approved by Government</p>
-      {% elif profile.status == 'rejected' %}
-        <p class="rejected">Rejected by Government</p>
-      {% else %}
-        <p class="pending">Pending Government Approval</p>
-      {% endif %}
+<div class="container">
 
-      <br />
-      <a href="/logout/" class="btn">Logout</a>
+    <!-- Header -->
+    <div class="header">
+        <div>
+            <h2>👨‍⚕️ {{ profile.user.name }}</h2>
+            <p class="sub">{{ profile.specialization }}</p>
+        </div>
 
-      <a href="/doctor/access-patient/"><button>Access Patient Data</button></a>
+        {% if profile.status == 'approved' %}
+            <span class="status approved">Approved</span>
+        {% elif profile.status == 'rejected' %}
+            <span class="status rejected">Rejected</span>
+        {% else %}
+            <span class="status pending">Pending</span>
+        {% endif %}
     </div>
-  </body>
+
+    <!-- Info -->
+    <div class="info-card">
+        <div>
+            <span>Email</span>
+            <p>{{ profile.user.email }}</p>
+        </div>
+
+        <div>
+            <span>Hospital</span>
+            <p>{{ profile.hospital.hospital_name }}</p>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+        <a href="/doctor/access-patient/" class="btn primary">
+            Access Patient Data
+        </a>
+
+        <a href="/logout/" class="btn danger">
+            Logout
+        </a>
+    </div>
+
+</div>
+
+</body>
 </html>

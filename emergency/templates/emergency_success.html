@@ -1,17 +1,67 @@
-<h2>🚑 Emergency Submitted</h2>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emergency Submitted</title>
 
-<p><strong>Priority:</strong> {{ priority|upper }}</p>
+<link rel="stylesheet" href="{% static 'css/emergency_success.css' %}">
+</head>
+<body>
 
-{% if hospital %}
-<p>Assigned Hospital:</p>
-<h3>{{ hospital.hospital_name }}</h3>
-<p>Ambulance reaching shortly...</p>
-{% else %}
-<p>No nearby hospital found. Request is pending.</p>
-{% endif %}
+<div class="wrapper">
 
-<hr>
-<h3>AI Analysis:</h3>
-<p>{{ analysis }}</p>
+    <div class="card">
 
-<a href="/">Back to Home</a>
+        <!-- Title -->
+        <h2>🚑 Emergency Submitted</h2>
+
+        <!-- Priority -->
+        <div class="priority-box">
+            Priority:
+            <span class="{{ priority }}">
+                {{ priority|upper }}
+            </span>
+        </div>
+
+        <!-- Hospital -->
+        <div class="hospital-box">
+
+            {% if hospital %}
+                <p class="assigned">Assigned Hospital</p>
+                <h3>{{ hospital.hospital_name }}</h3>
+                <p class="msg">🚑 Ambulance is on the way</p>
+            {% else %}
+                <p class="pending">No nearby hospital found</p>
+                <p class="msg">Request is still pending</p>
+            {% endif %}
+
+        </div>
+
+        <!-- AI -->
+        <div class="ai-section">
+            <button onclick="toggleAI()" class="ai-btn">
+                View AI Analysis
+            </button>
+
+            <div id="aiBox" class="ai-box">
+                {{ analysis }}
+            </div>
+        </div>
+
+        <!-- Back -->
+        <a href="/" class="back">← Back to Home</a>
+
+    </div>
+
+</div>
+
+<script>
+function toggleAI() {
+    document.getElementById("aiBox").classList.toggle("show");
+}
+</script>
+
+</body>
+</html>
